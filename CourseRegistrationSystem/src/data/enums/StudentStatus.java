@@ -9,5 +9,6 @@ package data.enums;
  * @author admin
  */
 public enum StudentStatus {
-    
+    ACTIVE,
+    INACTIVE
 }
