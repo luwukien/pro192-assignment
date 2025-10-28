@@ -4,6 +4,6 @@ package interfaces;
  *
  * @author IdeaPad
  */
-public class Identifiable {
-    
+public interface Identifiable {
+    public String getId();
 }
