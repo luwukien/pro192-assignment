@@ -4,7 +4,6 @@ import java.util.List;
 import java.util.Collections;
 import java.util.Comparator;
 import data.Student;
-import data.TestStudent;
 import java.util.ArrayList;
 import manager.Management;
 
@@ -21,14 +20,14 @@ public class StudentManager extends Management<Student> {
         this.students = this.list;
     }
 
-    public List<TestStudent> findByName(String name) {
+    public List<Student> findByName(String name) {
         if (name == null) {
             return null;
         }
 
         for (Student student : students) {
             if (name.equals(student.getFullName())) {
-                return (List<TestStudent>) student;
+                return (List<Student>) student;
             }
         }
         System.out.println("Not found any name in the list student!");
@@ -72,13 +71,14 @@ public class StudentManager extends Management<Student> {
     }
 
     //Using the main method to test
+    /*
     public static void main(String[] args) {
         System.out.println("--- TEST LOP LOGIC: STUDENT MANAGER ---");
 
-        List<TestStudent> fakeList = new ArrayList<>();
-        fakeList.add(new TestStudent("S3", "Thang C", 8.0));
-        fakeList.add(new TestStudent("S1", "Thang A", 9.5));
-        fakeList.add(new TestStudent("S2", "Thang B", 7.5));
+        List<Student> fakeList = new ArrayList<>();
+        fakeList.add(new Student("S3", "Thang C", 8.0));
+        fakeList.add(new Student("S1", "Thang A", 9.5));
+        fakeList.add(new Student("S2", "Thang B", 7.5));
 
         TestStudentManager manager = new TestStudentManager(fakeList);
 
@@ -97,4 +97,5 @@ public class StudentManager extends Management<Student> {
         manager.add(new TestStudent("S4", "Thang D", 5.0));
         manager.displayAll();
     }
+    */
 }
