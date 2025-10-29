@@ -4,17 +4,16 @@
  */
 package data;
 
+import enums.RegistrationStatus;
 import interfaces.FileSerializable;
 import interfaces.Identifiable;
+
 
 /**
  *
  * @author vuhuy
  */
 public class Registration implements Identifiable, FileSerializable {
-    public enum RegistrationStatus {
-        ENROLLED, PASSED, FAILED, WITHDRAWN
-    }
 
     private String studentId;
     private String courseSectionId;
@@ -73,3 +72,4 @@ public class Registration implements Identifiable, FileSerializable {
         return studentId + "_" + courseSectionId;
     }
 }
+
