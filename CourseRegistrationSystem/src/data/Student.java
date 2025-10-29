@@ -4,21 +4,14 @@ import enums.StudentStatus;
 import interfaces.FileSerializable;
 import interfaces.Identifiable;
 
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
-
-/**
- *
- * @author vuhuy
- */
 public class Student extends Person implements Identifiable, FileSerializable {
+
     private String studentId;
     private String major;
     private StudentStatus status;
 
-    public Student() {}
+    public Student() {
+    }
 
     public Student(String studentId, String major, StudentStatus status) {
         this.studentId = studentId;
@@ -66,21 +59,18 @@ public class Student extends Person implements Identifiable, FileSerializable {
         this.email = email;
     }
 
-    
     @Override
     public String toString() {
         return "Student{" + "studentId=" + studentId + ", major=" + major + ", status=" + status + '}';
     }
 
-
-
     @Override
-    public String toFileString() { 
-        return ""; 
+    public String toFileString() {
+        return "";
     }
 
     @Override
-    public String getId() { 
-        return ""; 
+    public String getId() {
+        return "";
     }
 }

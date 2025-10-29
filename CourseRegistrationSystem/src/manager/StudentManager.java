@@ -5,6 +5,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import data.Student;
 import data.TestStudent;
+import java.util.ArrayList;
 import manager.Management;
 
 /**
@@ -41,13 +42,59 @@ public class StudentManager extends Management<Student> {
 
     public List<Student> getStudentsSortedByOverallGPA() {
         System.out.println("---- After sorted by overall GPA of the list student ----");
-        //Collections.sort(students, Comparator.comparing(TestStudent::calculateOverallGPA));
+        //Collections.sort(this.students, Comparator.comparing(Student::calculateOverallGPA));
         //TODO: làm sau sau khi hoàn thiện method calculateOverallGPA ở class RegistrationManager;
         return null;
     }
-    
+
     public List<Student> getStudentsSortedBySubjectGPA(String subjectId) {
         System.out.println("---- After sorted by overall GPA of the list student ----");
-        Collections.sort(students, Comparator.co);
+        //Collections.sort(this.students, Comparator.comparing(Student));
+        return null;
+    }
+    // TODO
+    public double calculateOverallGPA(String studentId) {
+        return -1;
+    }
+    // TODO
+    public double calculateSemesterGPA(String studentId, String semester) {
+        return -1;
+    }
+
+    public void displayAll() {
+        if (this.list.isEmpty()) {
+            System.out.println("Empty list");
+            return;
+        }
+        for (Student student : students) {
+            System.out.println(student);
+        }
+    }
+
+    //Using the main method to test
+    public static void main(String[] args) {
+        System.out.println("--- TEST LOP LOGIC: STUDENT MANAGER ---");
+
+        List<TestStudent> fakeList = new ArrayList<>();
+        fakeList.add(new TestStudent("S3", "Thang C", 8.0));
+        fakeList.add(new TestStudent("S1", "Thang A", 9.5));
+        fakeList.add(new TestStudent("S2", "Thang B", 7.5));
+
+        TestStudentManager manager = new TestStudentManager(fakeList);
+
+        System.out.println("\n[TEST displayAll ban dau]");
+        manager.displayAll();
+
+        System.out.println("\n[TEST sortByName()]");
+        manager.sortByName();
+        manager.displayAll(); // A -> B -> C
+
+        System.out.println("\n[TEST sortByGPA()]");
+        manager.sortByGPA();
+        manager.displayAll(); // 9.5 -> 8.0 -> 7.5
+
+        System.out.println("\n[TEST add(S4)]");
+        manager.add(new TestStudent("S4", "Thang D", 5.0));
+        manager.displayAll();
     }
 }

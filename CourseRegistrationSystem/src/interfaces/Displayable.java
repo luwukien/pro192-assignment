@@ -1,9 +1,5 @@
 package interfaces;
 
-/**
- *
- * @author IdeaPad
- */
-public class Displayable {
-    
+public interface Displayable {
+    public void displayAll();
 }
