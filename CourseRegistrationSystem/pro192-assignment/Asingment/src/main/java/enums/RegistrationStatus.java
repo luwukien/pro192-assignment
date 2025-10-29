@@ -9,5 +9,6 @@ package enums;
  * @author vuhuy
  */
 public class RegistrationStatus {
-    
+    ENROLLED, PASSED, FAILED, WITHDRAWN
 }
+
