@@ -73,7 +73,7 @@ public class Registration implements Identifiable, FileSerializable {
     }
 
     @Override
-    public String toString() { // [cite: 90]
+    public String toString() { 
         return "Registration{"
                 + "studentId='" + studentId + '\''
                 + ", courseSectionId='" + courseSectionId + '\''

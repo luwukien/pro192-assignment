@@ -43,6 +43,12 @@ public class Subject implements Identifiable, FileSerializable {
     public void setCredit(int credit) {
         this.credit = credit;
     }
+
+    public List<String> getPrerequisiteSubjectIds() {
+        return prerequisiteSubjectIds;
+    }
+
+    
     public void addPrerequisite(String subjectId){
         prerequisiteSubjectIds.add(subjectId);
     }
