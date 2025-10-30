@@ -1,39 +1,63 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package manager;
 
-import java.util.ArrayList;
+import interfaces.Identifiable;
 import java.util.List;
 
 /**
- *
- * @author vuhuy
  * @param <T>
  */
-public abstract class Management<T> {
-    protected List<T> list = new ArrayList<>();
+public abstract class Management<T extends Identifiable> {
 
-    public Management() {}
+    protected List<T> list;
 
     public Management(List<T> initialList) {
         this.list = initialList;
     }
 
     public List<T> getAll() {
-        return list;
+        return this.list;
     }
 
-    public abstract T findById(String id);
+    public T findById(String id) {
+        for (T item : list) {
+            if (item.getId().equals(id)) {
+                return item;
+            }
+        }
+        return null;
+    }
 
     public boolean add(T item) {
-        return list.add(item);
+        String newId = item.getId();
+        if (findById(newId) != null) {
+            System.out.println("Found this id: " + item.getId() + " exist!");
+            return false;
+        }
+        this.list.add(item);
+        return true;
     }
 
-    public boolean delete(T item) {
-        return list.remove(item);
+    public boolean delete(String id) {
+        T itemFound = findById(id);
+        if (findById(id) == null) {
+            System.out.println("This this id: " + id + " is not exist!");
+            return false;
+        }
+
+        this.list.remove(itemFound);
+        return true;
     }
 
-    public abstract boolean update(T itemToUpdate);
+    public boolean update(T itemToUpdate) {
+        String id = itemToUpdate.getId();
+        for (int i = 0; i < this.list.size(); i++) {
+            if (this.list.get(i).getId().equals(id)) {
+                this.list.set(i, itemToUpdate);
+                return true;
+            }
+        }
+        System.out.println("Not found this id: " + id + "to update");
+        return false;
+    }
+
 }

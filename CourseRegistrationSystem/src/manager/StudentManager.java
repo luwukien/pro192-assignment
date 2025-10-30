@@ -2,25 +2,24 @@ package manager;
 
 import data.Student;
 import interfaces.Displayable;
-import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.util.ArrayList;
 
+// Kế thừa Management<Student> và implement Displayable
 public class StudentManager extends Management<Student> implements Displayable {
 
+    private final RegistrationManager registrationManager;
 
-    // Constructor
-    public StudentManager(List<Student> initialList) {
-        // Gọi constructor lớp cha, thuộc tính 'list' sẽ được gán giá trị
-        super(initialList); 
-        // LƯU Ý: Nếu Management không tự khởi tạo list khi initialList là null, 
-        // thì cần đảm bảo list được khởi tạo trong constructor Management.
+    // Constructor MỚI (Cần RegistrationManager cho tính GPA)
+    public StudentManager(List<Student> initialList, RegistrationManager registrationManager) {
+        super(initialList);
+        this.registrationManager = registrationManager;
     }
 
     // Tìm sinh viên theo tên
     public List<Student> findByName(String name) {
         List<Student> result = new ArrayList<>();
-        // SỬA: Dùng 'list' thay vì 'students'
         for (Student s : list) {
             if (s.getFullName().toLowerCase().contains(name.toLowerCase())) {
                 result.add(s);
@@ -31,65 +30,37 @@ public class StudentManager extends Management<Student> implements Displayable {
 
     // Sắp xếp theo tên (alphabet)
     public void sortByName() {
-        // SỬA: Dùng 'list' thay vì 'students'
         list.sort(Comparator.comparing(Student::getFullName, String.CASE_INSENSITIVE_ORDER));
     }
 
-    // Sắp xếp theo GPA (giả sử sau này Student có trường GPA)
+    // Sắp xếp theo GPA (sử dụng RegistrationManager)
     public void sortByGPA() {
-        System.out.println("Chưa có trường GPA để sắp xếp.");
-    }
+        if (list.isEmpty()) {
+            System.out.println("Danh sách sinh viên trống, không thể sắp xếp.");
+            return;
+        }
 
-    // Lấy danh sách sinh viên theo GPA tổng (placeholder)
-    public List<Student> getStudentsSortedByOverallGPA() {
-        System.out.println("Chưa có dữ liệu GPA tổng.");
-        // SỬA: Dùng 'list' thay vì 'students'
-        return new ArrayList<>(list);
+        list.sort((s1, s2) -> {
+            double gpa1 = registrationManager.calculateOverallGPA(s1.getId());
+            double gpa2 = registrationManager.calculateOverallGPA(s2.getId());
+            return Double.compare(gpa2, gpa1); // Giảm dần
+        });
+        
+        System.out.println("Danh sách sinh viên đã được sắp xếp theo GPA tổng giảm dần.");
     }
-
-    // Lấy danh sách sinh viên theo điểm một môn cụ thể (placeholder)
-    public List<Student> getStudentsSortedBySubjectGrade(String subjectId) {
-        System.out.println("Chưa có dữ liệu điểm môn học: " + subjectId);
-        // SỬA: Dùng 'list' thay vì 'students'
-        return new ArrayList<>(list);
-    }
-
-    // Hiển thị tất cả sinh viên
+    
+    // implement Displayable
     @Override
     public void displayAll() {
-        // SỬA: Dùng 'list' thay vì 'students'
         if (list.isEmpty()) {
             System.out.println("Danh sách sinh viên trống.");
         } else {
             System.out.println("=== DANH SÁCH SINH VIÊN ===");
-            // SỬA: Dùng 'list' thay vì 'students'
             for (Student s : list) {
                 System.out.println(s);
             }
         }
     }
-
-    // Phương thức bắt buộc từ Management (tìm kiếm theo ID)
-    @Override
-    public Student findById(String id) {
-        for (Student s : list) {
-            if (s.getId().equalsIgnoreCase(id)) {
-                return s;
-            }
-        }
-        return null;
-    }
-
-    // Phương thức bắt buộc từ Management (cập nhật)
-    @Override
-    public boolean update(Student itemToUpdate) {
-        for (int i = 0; i < list.size(); i++) {
-            Student current = list.get(i);
-            if (current.getId().equalsIgnoreCase(itemToUpdate.getId())) {
-                list.set(i, itemToUpdate);
-                return true;
-            }
-        }
-        return false;
-    }
+    
+    // ĐÃ XÓA: findById(), update() vì chúng được kế thừa từ Management<T>
 }
