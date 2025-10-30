@@ -1,20 +1,21 @@
 package data;
 
-import interfaces.FileSerializable;
-import interfaces.Identifiable;
 import enums.RegistrationStatus;
+import interfaces.Identifiable;
+import interfaces.FileSerializable;
 
 public class Registration implements Identifiable, FileSerializable {
 
-    private String studentId;
-    private String courseSectionId;
-    private double grade;
-    private RegistrationStatus status;
+    private String studentId; 
+    private String courseSectionId; 
+    private double grade; 
+    private RegistrationStatus status; 
 
-    // Constructors
     public Registration() {
+        this.status = RegistrationStatus.ENROLLED;
     }
 
+    
     public Registration(String studentId, String courseSectionId, double grade, RegistrationStatus status) {
         this.studentId = studentId;
         this.courseSectionId = courseSectionId;
@@ -22,64 +23,62 @@ public class Registration implements Identifiable, FileSerializable {
         this.status = status;
     }
 
-    // Getters & Setters
+    
     public String getStudentId() {
         return studentId;
-    }
-
-    public void setStudentId(String studentId) {
-        this.studentId = studentId;
     }
 
     public String getCourseSectionId() {
         return courseSectionId;
     }
 
-    public void setCourseSectionId(String courseSectionId) {
-        this.courseSectionId = courseSectionId;
-    }
-
     public double getGrade() {
         return grade;
-    }
-
-    public void setGrade(double grade) {
-        this.grade = grade;
     }
 
     public RegistrationStatus getStatus() {
         return status;
     }
 
+    public void setGrade(double grade) {
+        this.grade = grade;
+    }
+
     public void setStatus(RegistrationStatus status) {
         this.status = status;
     }
 
-    public void updateStatusByGrade() {
-        if (grade >= 5.0) {
-            status = RegistrationStatus.PASSED;
-        } else if (grade < 5.0 && grade >= 0) {
-            status = RegistrationStatus.FAILED;
+    
+    public void updateStatusByGrade() { 
+        if (grade >= 5.0) { 
+            this.status = RegistrationStatus.PASSED;
+        } else if (grade > 0 && grade < 5.0) {
+            this.status = RegistrationStatus.FAILED;
         }
+    
+    }
+
+    
+    @Override
+    public String getId() {
+    
+        return this.studentId + "_" + this.courseSectionId;
+    }
+
+    
+    @Override
+    public String toFileString() {
+        return String.format("%s|%s|%.2f|%s",
+                studentId, courseSectionId, grade, status.name());
     }
 
     @Override
-    public String toString() {
+    public String toString() { // [cite: 90]
         return "Registration{"
                 + "studentId='" + studentId + '\''
                 + ", courseSectionId='" + courseSectionId + '\''
                 + ", grade=" + grade
                 + ", status=" + status
                 + '}';
-    }
-
-    @Override
-    public String toFileString() {
-        return studentId + "," + courseSectionId + "," + grade + "," + status;
-    }
-
-    @Override
-    public String getId() {
-        return studentId + "_" + courseSectionId;
     }
 }
