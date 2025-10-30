@@ -4,8 +4,6 @@ import interfaces.Identifiable;
 import java.util.List;
 
 /**
- *
- * @author IdeaPad
  * @param <T>
  */
 public abstract class Management<T extends Identifiable> {

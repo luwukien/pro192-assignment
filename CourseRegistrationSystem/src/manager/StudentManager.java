@@ -3,15 +3,11 @@ package manager;
 import java.util.List;
 import java.util.Collections;
 import java.util.Comparator;
-import data.Student;
 import java.util.ArrayList;
-import manager.Management;
+import data.Student;
+import interfaces.Displayable;
 
-/**
- *
- * @author IdeaPad
- */
-public class StudentManager extends Management<Student> {
+public class StudentManager extends Management<Student> implements Displayable{
 
     private List<Student> students;
 
@@ -59,9 +55,10 @@ public class StudentManager extends Management<Student> {
     public double calculateSemesterGPA(String studentId, String semester) {
         return -1;
     }
-
+    
+    @Override
     public void displayAll() {
-        if (this.list.isEmpty()) {
+        if (this.students.isEmpty()) {
             System.out.println("Empty list");
             return;
         }
