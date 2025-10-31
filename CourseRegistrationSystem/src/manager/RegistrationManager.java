@@ -84,7 +84,7 @@ public class RegistrationManager extends Management<Registration> implements Dis
                 return false;
             }
         }
-        
+
         Registration newRegis = new Registration(studentId, courseSectionId, 0.0, RegistrationStatus.ENROLLED);
         super.add(newRegis);
         course.incrementStudentCount();
@@ -108,6 +108,30 @@ public class RegistrationManager extends Management<Registration> implements Dis
         return totalCredits;
     }
 
+    public boolean withdrawCourse(String studentId, String courseSectionId) {
+        for (Registration registration : this.list) {
+            if (registration.getCourseSectionId().equals(courseSectionId) && registration.getStudentId().equals(studentId)) {
+                Registration regTarget = registration;
+                if (regTarget.getStatus() == RegistrationStatus.ENROLLED) {
+                    regTarget.setStatus(RegistrationStatus.WITHDRAWN);
+                    super.update(regTarget);
+                    CourseSection section = courseManager.findById(courseSectionId);
+                    if (section != null) {
+                        section.decrementStudentCount();
+                    }
+                    courseManager.update(section);
+                    return true;
+                } else {
+                    System.out.println("This course section studied / withdrawn!");
+                    return false;
+                }
+            }
+        }
+
+        System.out.println("This courseSectionID: " + courseSectionId + "is not found");
+        return false;
+    }
+
     public List<Registration> getRegistrationsByStudent(String studentId) {
         ArrayList<Registration> resultList = new ArrayList<>();
 
@@ -118,6 +142,36 @@ public class RegistrationManager extends Management<Registration> implements Dis
         }
         return resultList;
     }
+
+    public List<Registration> getRegistrationsByCourse(String sectionId) {
+        ArrayList<Registration> resultList = new ArrayList<>();
+
+        for (Registration registration : registrations) {
+            if (registration.getCourseSectionId().equals(sectionId)) {
+                resultList.add(registration);
+            }
+        }
+        return resultList;
+
+    }
+
+    public List<Student> getStudentsByCourseSection(String courseSectionId) {
+        ArrayList<Student> studentList = new ArrayList<>();
+        List<Registration> regs = getRegistrationsByCourse(courseSectionId);
+
+        for (Registration reg : regs) {
+            String studentId = reg.getStudentId();
+            Student student = studentManager.findById(studentId);
+            if (student != null) {
+                studentList.add(student);
+            }
+        }
+
+        return studentList;
+
+    }
+    
+    
 
     @Override
     public void displayAll() {
