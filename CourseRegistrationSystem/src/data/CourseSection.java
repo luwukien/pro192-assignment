@@ -2,6 +2,7 @@ package data;
 
 import interfaces.Identifiable;
 import interfaces.FileSerializable;
+import data.enums.DayOfWeek;
 
 public class CourseSection implements Identifiable, FileSerializable {
     private String courseSectionId; 
@@ -9,7 +10,7 @@ public class CourseSection implements Identifiable, FileSerializable {
     private int semester; 
     private int maxStudents; 
     private int currentStudentCount; 
-    private String dayOfWeek;
+    private DayOfWeek dayOfWeek;
     private int startSlot;
     private int endSlot; 
 
@@ -17,7 +18,7 @@ public class CourseSection implements Identifiable, FileSerializable {
     }
 
     public CourseSection(String courseSectionId, String subjectId, int semester, int maxStudents,
-                         int currentStudentCount, String dayOfWeek, int startSlot, int endSlot) {
+                         int currentStudentCount, DayOfWeek dayOfWeek, int startSlot, int endSlot) {
         this.courseSectionId = courseSectionId;
         this.subjectId = subjectId;
         this.semester = semester;
@@ -68,11 +69,11 @@ public class CourseSection implements Identifiable, FileSerializable {
         this.currentStudentCount = currentStudentCount;
     }
 
-    public String getDayOfWeek() {
+    public DayOfWeek getDayOfWeek() {
         return dayOfWeek;
     }
 
-    public void setDayOfWeek(String dayOfWeek) {
+    public void setDayOfWeek(DayOfWeek dayOfWeek) {
         this.dayOfWeek = dayOfWeek;
     }
 
