@@ -1,3 +1,10 @@
-CSD201|Cau Truc Du Lieu|3|
-MTH101|Toan Cao Cap A1|4|
-WEB301|Lap Trinh Web|3|CSD201,MTH101
+MAE101|Đại số tuyến tính|3|
+PRO192|Lập trình Java|3|MAE101
+CSD201|Cấu trúc dữ liệu|4|PRO192
+PRF192|Lập trình C|3|
+DBI202|Hệ quản trị CSDL|3|PRO192
+PRN211|Lập trình C#|3|PRO192
+PRJ301|Lập trình Web tĩnh|4|CSD201
+WED201|Thiết kế Web|3|
+JPD120|Tiếng Nhật 1|2|
+MAD101|Toán rời rạc|3|MAE101

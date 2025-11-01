@@ -5,43 +5,74 @@ import interfaces.Identifiable;
 import interfaces.FileSerializable;
 
 public class Student extends Person implements Identifiable, FileSerializable {
-    private String studentId; // studentid [cite: 31]
-    private String major;     // major [cite: 32]
-    private StudentStatus status; // -status 
+    private String studentId; 
+    private String major;     
+    private StudentStatus status; 
 
-    // Constructor đầy đủ [cite: 36, 37, 38]
+    public Student() {
+    }
+
     public Student(String studentId, String fullName, String major, String email, StudentStatus status) {
-        super(fullName, email); 
+        this.fullName = fullName;
+        this.email = email;
         this.studentId = studentId;
         this.major = major;
         this.status = status;
     }
 
-    // Getters
-    public String getStudentId() { return studentId; }
-    public String getMajor() { return major; }
-    public StudentStatus getStatus() { return status; }
-
-    // Setters
-    public void setMajor(String major) { this.major = major; }
-    public void setStatus(StudentStatus status) { this.status = status; }
-
-    // Thực hiện Identifiable [cite: 42]
-    @Override
-    public String getId() {
-        return this.studentId;
+    public String getStudentId() {
+        return studentId;
     }
 
-    // Thực hiện FileSerializable [cite: 41]
+    public void setStudentId(String studentId) {
+        this.studentId = studentId;
+    }
+
+    public String getMajor() {
+        return major;
+    }
+
+    public void setMajor(String major) {
+        this.major = major;
+    }
+
+    public StudentStatus getStatus() {
+        return status;
+    }
+
+    public void setStatus(StudentStatus status) {
+        this.status = status;
+    }
+
+    public String getFullName() {
+        return fullName;
+    }
+
+    public void setFullName(String fullName) {
+        this.fullName = fullName;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    @Override
+    public String getId() {
+        return studentId;
+    }
+
     @Override
     public String toFileString() {
-        // studentId|fullName|major|email|status
         return String.format("%s|%s|%s|%s|%s",
             studentId, fullName, major, email, status.name());
     }
 
     @Override
-    public String toString() { // [cite: 40]
+    public String toString() { 
         return "Student{" +
                "id='" + studentId + '\'' +
                ", name='" + fullName + '\'' +
