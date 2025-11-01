@@ -4,16 +4,18 @@ import interfaces.Identifiable;
 import interfaces.FileSerializable;
 
 public class CourseSection implements Identifiable, FileSerializable {
-    private String courseSectionId; // -courseSectionid [cite: 57]
-    private String subjectId; // subjectid [cite: 58]
-    private int semester; // -semester [cite: 59]
-    private int maxStudents; // maxStudents [cite: 60]
-    private int currentStudentCount; // -currentStudentCount [cite: 61]
-    private String dayOfWeek; // -dayOfWeek [cite: 62]
-    private int startSlot; // -startSlot [cite: 63]
-    private int endSlot; // endSlot [cite: 64]
+    private String courseSectionId; 
+    private String subjectId; 
+    private int semester; 
+    private int maxStudents; 
+    private int currentStudentCount; 
+    private String dayOfWeek;
+    private int startSlot;
+    private int endSlot; 
 
-    // Constructor đầy đủ [cite: 66, 67, 68, 69]
+    public CourseSection() {
+    }
+
     public CourseSection(String courseSectionId, String subjectId, int semester, int maxStudents,
                          int currentStudentCount, String dayOfWeek, int startSlot, int endSlot) {
         this.courseSectionId = courseSectionId;
@@ -26,54 +28,100 @@ public class CourseSection implements Identifiable, FileSerializable {
         this.endSlot = endSlot;
     }
 
-    // Getters/Setters [cite: 70]
-    public String getCourseSectionId() { return courseSectionId; }
-    public String getSubjectId() { return subjectId; }
-    public int getSemester() { return semester; }
-    public int getMaxStudents() { return maxStudents; }
-    public int getCurrentStudentCount() { return currentStudentCount; }
-    public String getDayOfWeek() { return dayOfWeek; }
-    public int getStartSlot() { return startSlot; }
-    public int getEndSlot() { return endSlot; }
+    public String getCourseSectionId() {
+        return courseSectionId;
+    }
 
-    public void setMaxStudents(int maxStudents) { this.maxStudents = maxStudents; }
-    // Setter cho currentStudentCount chỉ nên dùng cho mục đích load
-    public void setCurrentStudentCount(int currentStudentCount) { this.currentStudentCount = currentStudentCount; }
+    public void setCourseSectionId(String courseSectionId) {
+        this.courseSectionId = courseSectionId;
+    }
 
-    // Logic nghiệp vụ nhỏ
-    public boolean isFull() { // [cite: 71]
+    public String getSubjectId() {
+        return subjectId;
+    }
+
+    public void setSubjectId(String subjectId) {
+        this.subjectId = subjectId;
+    }
+
+    public int getSemester() {
+        return semester;
+    }
+
+    public void setSemester(int semester) {
+        this.semester = semester;
+    }
+
+    public int getMaxStudents() {
+        return maxStudents;
+    }
+
+    public void setMaxStudents(int maxStudents) {
+        this.maxStudents = maxStudents;
+    }
+
+    public int getCurrentStudentCount() {
+        return currentStudentCount;
+    }
+
+    public void setCurrentStudentCount(int currentStudentCount) {
+        this.currentStudentCount = currentStudentCount;
+    }
+
+    public String getDayOfWeek() {
+        return dayOfWeek;
+    }
+
+    public void setDayOfWeek(String dayOfWeek) {
+        this.dayOfWeek = dayOfWeek;
+    }
+
+    public int getStartSlot() {
+        return startSlot;
+    }
+
+    public void setStartSlot(int startSlot) {
+        this.startSlot = startSlot;
+    }
+
+    public int getEndSlot() {
+        return endSlot;
+    }
+
+    public void setEndSlot(int endSlot) {
+        this.endSlot = endSlot;
+    }
+
+    public boolean isFull() { 
         return currentStudentCount >= maxStudents;
     }
 
-    public void incrementStudentCount() { // [cite: 72]
+    public void incrementStudentCount() {
         if (currentStudentCount < maxStudents) {
             currentStudentCount++;
         }
     }
 
-    public void decrementStudentCount() { // [cite: 73]
+    public void decrementStudentCount() { 
         if (currentStudentCount > 0) {
             currentStudentCount--;
         }
     }
 
-    // Thực hiện Identifiable [cite: 76]
     @Override
     public String getId() {
         return this.courseSectionId;
     }
 
-    // Thực hiện FileSerializable [cite: 75]
     @Override
     public String toFileString() {
-        // courseSectionId|subjectId|semester|maxStudents|currentStudentCount|dayOfWeek|startSlot|endSlot
         return String.format("%s|%s|%d|%d|%d|%s|%d|%d",
             courseSectionId, subjectId, semester, maxStudents, currentStudentCount, 
             dayOfWeek, startSlot, endSlot);
     }
     
     @Override
-    public String toString() { // [cite: 74]
+    public String toString() {
         return "CourseSection{" +
                "id='" + courseSectionId + '\'' +
                ", subjectId='" + subjectId + '\'' +
