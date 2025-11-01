@@ -10,5 +10,6 @@ package data.enums;
  */
 public enum StudentStatus {
     ACTIVE,
-    INACTIVE
+    INACTIVE,
+    GRADUATED
 }
