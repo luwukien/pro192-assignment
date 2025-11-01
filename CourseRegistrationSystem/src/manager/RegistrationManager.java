@@ -8,6 +8,8 @@ import data.Registration;
 import data.CourseSection;
 import data.Subject;
 import enums.RegistrationStatus;
+import java.util.HashSet;
+import java.util.Set;
 
 public class RegistrationManager extends Management<Registration> implements Displayable {
 
@@ -99,7 +101,7 @@ public class RegistrationManager extends Management<Registration> implements Dis
         for (Registration registration : getRegistrationsByStudent(studentId)) {
             if (registration.getStatus() == RegistrationStatus.ENROLLED) {
                 CourseSection section = courseManager.findById(registration.getCourseSectionId());
-                if (section.getSemester() == semester) {
+                if (section != null && section.getSemester() == semester) {
                     Subject subject = subjectManager.findById(section.getSubjectId());
                     totalCredits += subject.getCredit();
                 }
@@ -118,9 +120,10 @@ public class RegistrationManager extends Management<Registration> implements Dis
                     CourseSection section = courseManager.findById(courseSectionId);
                     if (section != null) {
                         section.decrementStudentCount();
+                        courseManager.update(section);
+                        return true;
                     }
-                    courseManager.update(section);
-                    return true;
+
                 } else {
                     System.out.println("This course section studied / withdrawn!");
                     return false;
@@ -170,8 +173,43 @@ public class RegistrationManager extends Management<Registration> implements Dis
         return studentList;
 
     }
-    
-    
+
+    public List<Student> getStudentsBySubject(String subjectId) {
+        Set<String> studentIds = new HashSet<>();
+        List<CourseSection> sections = courseManager.getSectionsBySubject(subjectId);
+        for (CourseSection section : sections) {
+            List<Student> studentsInThisSection = getStudentsByCourseSection(section.getCourseSectionId());
+            for (Student student : studentsInThisSection) {
+                studentIds.add(student.getStudentId());
+            }
+        }
+        List<Student> finalResult = new ArrayList<>();
+        for (String studentId : studentIds) {
+            if (studentId != null) {
+                finalResult.add(studentManager.findById(studentId));
+            }
+        }
+        return finalResult;
+    }
+
+    public List<Subject> getSubjectsByStudent(String studentId) {
+        Set<String> subjectIds = new HashSet<>();
+        List<Registration> regs = getRegistrationsByStudent(studentId);
+        for (Registration reg : regs) {
+            CourseSection section = courseManager.findById(reg.getCourseSectionId());
+            if (section != null) {
+                subjectIds.add(section.getSubjectId());
+            }
+        }
+        List<Subject> finalResult = new ArrayList<>();
+        for (String subjectId : subjectIds) {
+            if (studentId != null) {
+                finalResult.add(subjectManager.findById(subjectId));
+            }
+            
+        }
+        return finalResult;
+    }
 
     @Override
     public void displayAll() {
