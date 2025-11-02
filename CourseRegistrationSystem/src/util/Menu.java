@@ -3,20 +3,8 @@ package util;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Lớp tiện ích tĩnh quản lý việc hiển thị các tùy chọn menu 
- * và lấy lựa chọn hợp lệ từ người dùng.
- */
 public class Menu {
 
-    // --- Phương thức hiển thị menu chung ---
-
-    /**
-     * Hiển thị danh sách các tùy chọn và lấy lựa chọn hợp lệ của người dùng.
-     * @param title Tiêu đề của menu.
-     * @param options Danh sách các tùy chọn (String).
-     * @return Lựa chọn của người dùng (số nguyên, bắt đầu từ 1).
-     */
     public static int getChoice(String title, List<String> options) {
         System.out.println("\n=============================================");
         System.out.println("|| " + title.toUpperCase());
@@ -30,7 +18,6 @@ public class Menu {
         int min = 1;
         int max = options.size();
         
-        // Sử dụng Validator để đảm bảo đầu vào là một số nguyên hợp lệ trong phạm vi
         return Validator.getInt(
                 "Nhập lựa chọn của bạn [" + min + "-" + max + "]: ",
                 "Lựa chọn không hợp lệ!",
@@ -39,12 +26,6 @@ public class Menu {
         );
     }
     
-    // --- Phương thức hiển thị Menu Chính ---
-
-    /**
-     * Hiển thị menu chính của hệ thống.
-     * @return Lựa chọn của người dùng.
-     */
     public static int showMainMenu() {
         List<String> options = new ArrayList<>();
         options.add("Quản lý Sinh viên");
@@ -57,12 +38,7 @@ public class Menu {
         return getChoice("HỆ THỐNG ĐĂNG KÝ HỌC PHẦN", options);
     }
     
-    // --- Phương thức hiển thị Menu Sinh viên ---
 
-    /**
-     * Hiển thị menu quản lý sinh viên.
-     * @return Lựa chọn của người dùng.
-     */
     public static int showStudentManagementMenu() {
         List<String> options = new ArrayList<>();
         options.add("Thêm sinh viên mới");
@@ -77,12 +53,6 @@ public class Menu {
         return getChoice("QUẢN LÝ SINH VIÊN", options); 
     }
 
-    // --- Phương thức hiển thị Menu Môn học ---
-
-    /**
-     * Hiển thị menu quản lý môn học.
-     * @return Lựa chọn của người dùng.
-     */
     public static int showSubjectManagementMenu() {
         List<String> options = new ArrayList<>();
         options.add("Thêm môn học mới");
@@ -95,12 +65,7 @@ public class Menu {
         return getChoice("QUẢN LÝ MÔN HỌC", options);
     }
 
-    // --- Phương thức hiển thị Menu Học phần ---
-    
-    /**
-     * Hiển thị menu quản lý học phần mở.
-     * @return Lựa chọn của người dùng.
-     */
+
     public static int showCourseManagementMenu() {
         List<String> options = new ArrayList<>();
         options.add("Thêm học phần mới");
@@ -114,12 +79,7 @@ public class Menu {
         return getChoice("QUẢN LÝ HỌC PHẦN MỞ", options);
     }
     
-    // --- Phương thức hiển thị Menu Đăng ký/Điểm ---
-    
-    /**
-     * Hiển thị menu quản lý đăng ký và điểm.
-     * @return Lựa chọn của người dùng.
-     */
+
     public static int showRegistrationManagementMenu() {
         List<String> options = new ArrayList<>();
         options.add("Đăng ký học phần");
@@ -132,12 +92,7 @@ public class Menu {
         return getChoice("QUẢN LÝ ĐĂNG KÝ VÀ ĐIỂM", options);
     }
 
-    // --- Phương thức hiển thị Menu Báo cáo ---
-    
-    /**
-     * Hiển thị menu báo cáo và thống kê.
-     * @return Lựa chọn của người dùng.
-     */
+ 
     public static int showReportMenu() {
         List<String> options = new ArrayList<>();
         options.add("Tính GPA tổng cho sinh viên");

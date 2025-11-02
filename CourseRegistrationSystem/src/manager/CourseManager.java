@@ -5,7 +5,6 @@ import interfaces.Displayable;
 import java.util.List;
 import java.util.ArrayList;
 
-// Kế thừa Management<CourseSection> và implement Displayable
 public class CourseManager extends Management<CourseSection> implements Displayable {
 
     public CourseManager(List<CourseSection> initialList) {
