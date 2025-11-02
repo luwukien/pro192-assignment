@@ -2,7 +2,9 @@ package data;
 
 import interfaces.FileSerializable;
 import interfaces.Identifiable;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class Subject implements Identifiable, FileSerializable {
     private String subjectId;
@@ -18,8 +20,9 @@ public class Subject implements Identifiable, FileSerializable {
         this.subjectId = subjectId;
         this.subjectName = subjectName;
         this.credit = credit;
+        this.prerequisiteSubjectIds = new ArrayList<>();
     }
-
+    
     public String getSubjectId() {
         return subjectId;
     }
@@ -60,11 +63,14 @@ public class Subject implements Identifiable, FileSerializable {
 
     @Override
     public String toFileString() {
-        return ""; 
+        String prereqString = prerequisiteSubjectIds.isEmpty() ? "" : 
+                              prerequisiteSubjectIds.stream().collect(Collectors.joining(","));
+        return String.format("%s|%s|%d|%s",
+            subjectId, subjectName, credit, prereqString);
     }
 
     @Override
     public String getId() {
-        return ""; 
+        return this.subjectId;
     }
 }

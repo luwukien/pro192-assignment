@@ -19,6 +19,14 @@ public class Student extends Person implements Identifiable, FileSerializable {
         this.status = status;
     }
 
+    public Student(String studentId, String fullName, String major, String email, StudentStatus status) {
+        this.studentId = studentId;
+        this.fullName = fullName;
+        this.major = major;
+        this.email = email;
+        this.status = status;
+    }
+
     public String getStudentId() {
         return studentId;
     }
@@ -58,19 +66,24 @@ public class Student extends Person implements Identifiable, FileSerializable {
     public void setEmail(String email) {
         this.email = email;
     }
-
+    
     @Override
     public String toString() {
-        return "Student{" + "studentId=" + studentId + ", major=" + major + ", status=" + status + '}';
+        return "Student{"
+                + "studentId='" + studentId + '\''
+                + ", fullName='" + fullName + '\''
+                + ", major='" + major + '\''
+                + ", status=" + status
+                + '}';
     }
 
     @Override
     public String toFileString() {
-        return "";
+        return String.format("%s|%s|%s|%s|%s", studentId, fullName, major, email, status.name());
     }
 
     @Override
     public String getId() {
-        return "";
+        return this.studentId;
     }
 }

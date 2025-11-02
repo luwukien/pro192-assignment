@@ -61,7 +61,6 @@ public class Registration implements Identifiable, FileSerializable {
     
     @Override
     public String getId() {
-    
         return this.studentId + "_" + this.courseSectionId;
     }
 

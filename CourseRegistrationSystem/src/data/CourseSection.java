@@ -15,6 +15,7 @@ public class CourseSection implements Identifiable, FileSerializable {
     private int endSlot;
 
     public CourseSection() {
+        currentStudentCount = 0;
     }
 
     public CourseSection(String courseSectionId, String subjectId, int semester, int maxStudents,
