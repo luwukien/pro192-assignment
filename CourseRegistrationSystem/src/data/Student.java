@@ -13,17 +13,11 @@ public class Student extends Person implements Identifiable, FileSerializable {
     public Student() {
     }
 
-    public Student(String studentId, String major, StudentStatus status) {
-        this.studentId = studentId;
-        this.major = major;
-        this.status = status;
-    }
-
     public Student(String studentId, String fullName, String major, String email, StudentStatus status) {
-        this.studentId = studentId;
         this.fullName = fullName;
-        this.major = major;
         this.email = email;
+        this.studentId = studentId;
+        this.major = major;
         this.status = status;
     }
 

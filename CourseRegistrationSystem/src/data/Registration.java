@@ -5,17 +5,14 @@ import interfaces.Identifiable;
 import interfaces.FileSerializable;
 
 public class Registration implements Identifiable, FileSerializable {
-
     private String studentId; 
     private String courseSectionId; 
     private double grade; 
     private RegistrationStatus status; 
 
     public Registration() {
-        this.status = RegistrationStatus.ENROLLED;
     }
 
-    
     public Registration(String studentId, String courseSectionId, double grade, RegistrationStatus status) {
         this.studentId = studentId;
         this.courseSectionId = courseSectionId;
@@ -55,10 +52,8 @@ public class Registration implements Identifiable, FileSerializable {
         } else if (grade > 0 && grade < 5.0) {
             this.status = RegistrationStatus.FAILED;
         }
-    
     }
 
-    
     @Override
     public String getId() {
         return this.studentId + "_" + this.courseSectionId;

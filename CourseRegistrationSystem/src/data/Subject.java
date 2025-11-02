@@ -51,14 +51,19 @@ public class Subject implements Identifiable, FileSerializable {
         return prerequisiteSubjectIds;
     }
 
-    
-    public void addPrerequisite(String subjectId){
-        prerequisiteSubjectIds.add(subjectId);
+    public void setPrerequisiteSubjectIds(List<String> prerequisiteSubjectIds) {
+        this.prerequisiteSubjectIds = prerequisiteSubjectIds;
     }
-            
+
+    public void addPrerequisite(String subjectId) {
+        if (!prerequisiteSubjectIds.contains(subjectId)) {
+            prerequisiteSubjectIds.add(subjectId);
+        }
+    }
+
     @Override
-    public String toString() {
-        return "Subject{" + "subjectId=" + subjectId + ", subjectName=" + subjectName + ", credit=" + credit + '}';
+    public String getId() {
+        return this.subjectId;
     }
 
     @Override
@@ -66,11 +71,15 @@ public class Subject implements Identifiable, FileSerializable {
         String prereqString = prerequisiteSubjectIds.isEmpty() ? "" : 
                               prerequisiteSubjectIds.stream().collect(Collectors.joining(","));
         return String.format("%s|%s|%d|%s",
-            subjectId, subjectName, credit, prereqString);
+            subjectId, subjectName, credits, prereqString);
     }
-
+    
     @Override
-    public String getId() {
-        return this.subjectId;
+    public String toString() { 
+        return "Subject{" +
+               "subjectId='" + subjectId + '\'' +
+               ", name='" + subjectName + '\'' +
+               ", credits=" + credits +
+               '}';
     }
 }
