@@ -223,4 +223,16 @@ public class RegistrationManager extends Management<Registration> implements Dis
         System.out.println("=== DANH SÁCH ĐĂNG KÝ HỌC PHẦN ===");
         for (Registration registration : list) { System.out.println(registration); }
     }
+    /**
+ * Lấy danh sách Registration của tất cả sinh viên đăng ký một học phần cụ thể.
+ * KHỚP VỚI HÀM ĐƯỢC GỌI TRONG CourseRegistrationSystem
+ * @param courseId ID học phần cần tìm.
+ * @return Danh sách các bản ghi Registration.
+ */
+public List<Registration> getRegistrationsByCourseSection(String courseId) {
+    // Sử dụng list (được kế thừa) và stream để lọc
+    return list.stream()
+               .filter(r -> r.getCourseSectionId().equalsIgnoreCase(courseId))
+               .collect(Collectors.toList());
+}
 }
