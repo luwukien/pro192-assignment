@@ -15,7 +15,7 @@ public class CourseSection implements Identifiable, FileSerializable {
     private int endSlot;
 
     public CourseSection() {
-        currentStudentCount = 0;
+
     }
 
     public CourseSection(String courseSectionId, String subjectId, int semester, int maxStudents,
@@ -28,7 +28,6 @@ public class CourseSection implements Identifiable, FileSerializable {
         this.dayOfWeek = dayOfWeek;
         this.startSlot = startSlot;
         this.endSlot = endSlot;
-        this.currentStudentCount = 0;
     }
 
     public String getCourseSectionId() {
