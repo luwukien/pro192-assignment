@@ -37,9 +37,10 @@ public abstract class Management<T extends Identifiable> {
         return true;
     }
 
-    public boolean delete(String id) {
+    public boolean delete(T item) {
+        String id = item.getId();
         T itemFound = findById(id);
-        if (findById(id) == null) {
+        if (itemFound == null) {
             System.out.println("This this id: " + id + " is not exist!");
             return false;
         }
