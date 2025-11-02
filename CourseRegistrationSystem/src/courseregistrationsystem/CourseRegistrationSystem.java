@@ -124,7 +124,7 @@ public class CourseRegistrationSystem {
         } while (choice != 8);
     }
 
-    private void handleAddStudent() {
+private void handleAddStudent() {
         System.out.println("\n--- THÊM SINH VIÊN MỚI ---");
         String id;
         do {
@@ -147,7 +147,6 @@ public class CourseRegistrationSystem {
             System.out.println("Thêm sinh viên thất bại.");
         }
     }
-    
     private void handleFindStudentById() {
         System.out.println("\n--- TÌM KIẾM SINH VIÊN THEO ID ---");
         String id = Validator.getString("Nhập ID sinh viên cần tìm: ", "ID không được rỗng.");
@@ -158,7 +157,6 @@ public class CourseRegistrationSystem {
             System.out.println("Không tìm thấy sinh viên có ID: " + id);
         }
     }
-    
     private void handleFindStudentByName() {
         System.out.println("\n--- TÌM KIẾM SINH VIÊN THEO TÊN ---");
         String name = Validator.getString("Nhập tên (hoặc một phần tên) cần tìm: ", "Tên không được rỗng.");
@@ -170,7 +168,6 @@ public class CourseRegistrationSystem {
             System.out.println("Không tìm thấy sinh viên nào có tên chứa: " + name);
         }
     }
-
     private void handleDeleteStudent() {
         System.out.println("\n--- XÓA SINH VIÊN ---");
         String id = Validator.getString("Nhập ID sinh viên cần xóa: ", "ID không được rỗng.");
@@ -180,7 +177,6 @@ public class CourseRegistrationSystem {
             System.out.println("Xóa sinh viên thất bại.");
         }
     }
-
     private void handleUpdateStudent() {
         System.out.println("\n--- CẬP NHẬT THÔNG TIN SINH VIÊN ---");
         String id = Validator.getString("Nhập ID sinh viên cần cập nhật: ", "ID không được rỗng.");
@@ -216,12 +212,12 @@ public class CourseRegistrationSystem {
             System.out.println("Cập nhật thất bại.");
         }
     }
-
+    
     // ---------------------------------------------------------------------
     // XỬ LÝ MENU QUẢN LÝ MÔN HỌC (CASE 2)
     // ---------------------------------------------------------------------
 
-    private void handleSubjectManagement() {
+private void handleSubjectManagement() {
         int choice;
         do {
             choice = Menu.showSubjectManagementMenu();
@@ -236,7 +232,6 @@ public class CourseRegistrationSystem {
             }
         } while (choice != 6);
     }
-
     private void handleAddSubject() {
         System.out.println("\n--- THÊM MÔN HỌC MỚI ---");
         String id;
@@ -268,7 +263,6 @@ public class CourseRegistrationSystem {
             System.out.println("Thêm môn học thất bại.");
         }
     }
-
     private void handleFindSubjectById() {
         System.out.println("\n--- TÌM KIẾM MÔN HỌC THEO ID ---");
         String id = Validator.getString("Nhập ID môn học cần tìm: ", "ID không được rỗng.");
@@ -280,11 +274,61 @@ public class CourseRegistrationSystem {
             System.out.println("Không tìm thấy môn học có ID: " + id);
         }
     }
-
     private void handleUpdateSubject() {
-        System.out.println("Tính năng cập nhật Môn học đang được triển khai.");
+    System.out.println("\n--- CẬP NHẬT THÔNG TIN MÔN HỌC ---");
+    String id = Validator.getString("Nhập ID môn học cần cập nhật: ", "ID không được rỗng.");
+    
+    // Tìm kiếm môn học
+    data.Subject subjectToUpdate = subjectManager.findById(id);
+    
+    if (subjectToUpdate == null) {
+        System.out.println("Lỗi: Không tìm thấy môn học có ID: " + id);
+        return;
     }
 
+    System.out.println("--- Đang cập nhật cho: " + subjectToUpdate.getSubjectName() + " ---");
+    
+    // 1. Cập nhật Tên môn học
+    String currentName = subjectToUpdate.getSubjectName();
+    String newName = Validator.getString(
+        "Nhập Tên môn học mới (Enter để giữ nguyên '" + currentName + "'): ", 
+        null
+    );
+    if (!newName.isEmpty()) {
+        subjectToUpdate.setSubjectName(newName);
+    }
+    
+    // 2. Cập nhật Số tín chỉ
+    int currentCredits = subjectToUpdate.getCredits();
+    System.out.println("Số tín chỉ hiện tại: " + currentCredits);
+    
+    // Lấy input chuỗi và parse thủ công để cho phép người dùng nhập rỗng (giữ nguyên)
+    String newCreditsStr = Validator.getString(
+        "Nhập Số tín chỉ mới (1-10, Enter để giữ nguyên): ", 
+        null
+    );
+    
+    if (!newCreditsStr.isEmpty()) {
+        try {
+            int newCredits = Integer.parseInt(newCreditsStr);
+            if (newCredits >= 1 && newCredits <= 10) {
+                 subjectToUpdate.setCredits(newCredits);
+            } else {
+                System.out.println("Cảnh báo: Số tín chỉ phải nằm trong khoảng 1-10. Giữ nguyên giá trị cũ.");
+            }
+        } catch (NumberFormatException e) {
+            System.out.println("Lỗi định dạng. Giữ nguyên giá trị cũ.");
+        }
+    }
+    
+    // 3. Gọi hàm update() từ Management
+    if (subjectManager.update(subjectToUpdate)) {
+        System.out.println("Cập nhật môn học ID " + id + " thành công!");
+    } else {
+        // Lỗi đã được in ra trong Management.update() nếu ID không được tìm thấy
+        System.out.println("Cập nhật thất bại.");
+    }
+}
     private void handleDeleteSubject() {
         String id = Validator.getString("Nhập ID môn học cần xóa: ", "ID không được rỗng.");
         if (subjectManager.delete(id)) {
@@ -298,7 +342,7 @@ public class CourseRegistrationSystem {
     // XỬ LÝ MENU QUẢN LÝ HỌC PHẦN (CASE 3)
     // ---------------------------------------------------------------------
 
-    private void handleCourseManagement() {
+private void handleCourseManagement() {
         int choice;
         do {
             choice = Menu.showCourseManagementMenu();
@@ -314,7 +358,6 @@ public class CourseRegistrationSystem {
             }
         } while (choice != 7);
     }
-
     private void handleAddCourseSection() {
         System.out.println("\n--- THÊM HỌC PHẦN MỚI ---");
         String subjectId;
@@ -348,7 +391,6 @@ public class CourseRegistrationSystem {
             System.out.println("Thêm học phần thất bại (ID có thể đã trùng).");
         }
     }
-
     private void handleFindCourseSectionById() {
         System.out.println("\n--- TÌM KIẾM HỌC PHẦN THEO ID ---");
         String id = Validator.getString("Nhập ID học phần cần tìm: ", "ID không được rỗng.");
@@ -360,7 +402,6 @@ public class CourseRegistrationSystem {
             System.out.println("Không tìm thấy học phần có ID: " + id);
         }
     }
-
     private void handleFindCourseSectionBySubjectId() {
         System.out.println("\n--- TÌM KIẾM HỌC PHẦN THEO SUBJECT ID ---");
         String id = Validator.getString("Nhập Subject ID cần tìm: ", "ID không được rỗng.");
@@ -374,11 +415,50 @@ public class CourseRegistrationSystem {
             System.out.println("Không tìm thấy học phần nào cho Subject ID: " + id);
         }
     }
-
     private void handleUpdateCourseSection() {
-        System.out.println("Tính năng cập nhật Học phần đang được triển khai.");
+    System.out.println("\n--- CẬP NHẬT THÔNG TIN HỌC PHẦN ---");
+    String id = Validator.getString("Nhập ID học phần cần cập nhật: ", "ID không được rỗng.");
+    
+    CourseSection csToUpdate = courseManager.findById(id);
+    
+    if (csToUpdate == null) {
+        System.out.println("Lỗi: Không tìm thấy học phần có ID: " + id);
+        return;
+    }
+
+    System.out.println("--- Đang cập nhật cho: " + csToUpdate.getCourseSectionId() + " ---");
+    
+    // Yêu cầu nhập Max Students mới
+    System.out.println("Max Students hiện tại: " + csToUpdate.getMaxStudents());
+    // Chỉ nhập nếu người dùng không nhập rỗng (Validator cần được chỉnh sửa để hỗ trợ nhập số và chuỗi rỗng)
+    String maxStr = Validator.getString("Nhập Số lượng SV tối đa mới (Enter để giữ nguyên): ", null);
+    if (!maxStr.isEmpty()) {
+        try {
+            int newMax = Integer.parseInt(maxStr);
+            if (newMax >= csToUpdate.getCurrentStudentCount() && newMax > 0) {
+                 // Đảm bảo số lượng tối đa mới không nhỏ hơn số lượng hiện tại
+                csToUpdate.setMaxStudents(newMax); 
+            } else {
+                System.out.println("Cảnh báo: Số lượng SV tối đa phải lớn hơn số SV hiện tại và lớn hơn 0. Giữ nguyên giá trị cũ.");
+            }
+        } catch (NumberFormatException e) {
+            System.out.println("Lỗi định dạng. Giữ nguyên giá trị cũ.");
+        }
     }
     
+    // Cập nhật Ngày học
+    String newDay = Validator.getString("Nhập Ngày học mới (Enter để giữ nguyên): ", null);
+    if (!newDay.isEmpty()) { 
+        // csToUpdate.setDayOfWeek(newDay); // Giả định có setter cho dayOfWeek
+    }
+
+    // Gọi hàm update() từ Management
+    if (courseManager.update(csToUpdate)) {
+        System.out.println("Cập nhật học phần ID " + id + " thành công!");
+    } else {
+        System.out.println("Cập nhật thất bại.");
+    }
+}
     private void handleDeleteCourseSection() {
         String id = Validator.getString("Nhập ID học phần cần xóa: ", "ID không được rỗng.");
         if (courseManager.delete(id)) {
@@ -388,11 +468,7 @@ public class CourseRegistrationSystem {
         }
     }
     
-    // ---------------------------------------------------------------------
-    // CÁC PHƯƠNG THỨC PLACEHOLDER CHƯA TRIỂN KHAI
-    // ---------------------------------------------------------------------
-    
-    // -handleRegistrationManagement(): void
+
 private void handleRegistrationManagement() {
     int choice;
     do {
@@ -474,8 +550,7 @@ private void handleRegistrationManagement() {
         list.forEach(System.out::println);
     }
 }
-
-private void handleViewCourseStudents() {
+    private void handleViewCourseStudents() {
     System.out.println("\n--- XEM DANH SÁCH SINH VIÊN THEO HỌC PHẦN ---");
     String courseId = Validator.getString("Nhập ID học phần: ", "ID không được rỗng.");
     
