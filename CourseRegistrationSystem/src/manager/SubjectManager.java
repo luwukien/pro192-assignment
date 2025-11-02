@@ -15,6 +15,7 @@ public class SubjectManager extends Management<Subject> implements Displayable{
             return;
         }
         for (Subject subject : this.list) {
+            System.out.println("=== The list subjects ===");
             System.out.println(subject);
         }
     }

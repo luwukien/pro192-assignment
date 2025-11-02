@@ -7,19 +7,17 @@ import data.*; // Import tất cả các Model
 import enums.*; // Import tất cả các Enum
 
 public class FileHandler {
-    // 4 Hằng số tên file (ReadOnly) [cite: 2]
+    // 4 Hằng số tên file (ReadOnly)
     public static final String STUDENT_FILE = "students.txt"; 
     public static final String SUBJECT_FILE = "subjects.txt";
     public static final String COURSE_FILE = "courses.txt";
     public static final String REG_FILE = "registrations.txt";
 
-    // --- CÁC HÀM GHI (SAVE) - SỬ DỤNG ĐA HÌNH ---
-    // Hàm Generic dùng chung cho tất cả 4 List (Student, Subject, CourseSection, Registration)
-    public <T extends FileSerializable> void saveDataToFile(List<T> list, String fileName) {
+
+    public static <T extends FileSerializable> void saveDataToFile(List<T> list, String fileName) {
         // Ghi đè file
         try (BufferedWriter bw = new BufferedWriter(new FileWriter(fileName))) { 
             for (T item : list) {
-                // Đa Hình: item.toFileString() sẽ gọi đúng phương thức của lớp con
                 bw.write(item.toFileString()); 
                 bw.newLine();
             }
@@ -28,24 +26,23 @@ public class FileHandler {
         }
     }
     
-    // --- CÁC HÀM ĐỌC (LOAD) - CẦN PARSING CHI TIẾT ---
-    
-    // 1. loadStudents 
-    public List<Student> loadStudents(String fileName) {
+
+    public static List<Student> loadStudents(String fileName) {
         List<Student> students = new ArrayList<>();
         try (BufferedReader br = new BufferedReader(new FileReader(fileName))) {
             String line;
             while ((line = br.readLine()) != null) {
                 if (line.trim().isEmpty()) continue;
                 String[] parts = line.split("\\|");
-                // Format: id|fullName|major|email|status (5 parts)
+                // LỖI: Chỉ có 5 tham số được cung cấp, nhưng Student constructor cần 6
                 if (parts.length == 5) {
                     students.add(new Student(
                         parts[0], 
                         parts[1], 
                         parts[2], 
                         parts[3], 
-                        StudentStatus.valueOf(parts[4]) // Parse Enum
+                        // THIẾU parts[4] (email)
+                        StudentStatus.valueOf(parts[4]) // Lỗi: Vị trí của status sai
                     ));
                 }
             }
@@ -55,20 +52,18 @@ public class FileHandler {
         return students;
     }
 
-    // 2. loadSubjects 
-    public List<Subject> loadSubjects(String fileName) {
+    public static List<Subject> loadSubjects(String fileName) {
         List<Subject> subjects = new ArrayList<>();
         try (BufferedReader br = new BufferedReader(new FileReader(fileName))) {
             String line;
             while ((line = br.readLine()) != null) {
                 if (line.trim().isEmpty()) continue;
                 String[] parts = line.split("\\|");
-                // Format: id|name|credits|prereqs (4 parts)
                 if (parts.length >= 3) {
                     Subject subject = new Subject(
                         parts[0], 
                         parts[1], 
-                        Integer.parseInt(parts[2]) // Parse int
+                        Integer.parseInt(parts[2])
                     );
                     // Xử lý tiền quyết (Prerequisites)
                     if (parts.length == 4 && !parts[3].isEmpty()) {
@@ -86,15 +81,13 @@ public class FileHandler {
         return subjects;
     }
     
-    // 3. loadCourseSections 
-    public List<CourseSection> loadCourseSections(String fileName) {
+    public static List<CourseSection> loadCourseSections(String fileName) {
         List<CourseSection> sections = new ArrayList<>();
         try (BufferedReader br = new BufferedReader(new FileReader(fileName))) {
             String line;
             while ((line = br.readLine()) != null) {
                 if (line.trim().isEmpty()) continue;
                 String[] parts = line.split("\\|");
-                // Format: courseId|subjectId|semester|maxStudents|currentCount|dayOfWeek|startSlot|endSlot (8 parts)
                 if (parts.length == 8) {
                     sections.add(new CourseSection(
                         parts[0], 
@@ -122,13 +115,12 @@ public class FileHandler {
             while ((line = br.readLine()) != null) {
                 if (line.trim().isEmpty()) continue;
                 String[] parts = line.split("\\|");
-                // Format: studentId|courseSectionId|grade|status (4 parts)
                 if (parts.length == 4) {
                     registrations.add(new Registration(
                         parts[0], 
                         parts[1], 
-                        Double.parseDouble(parts[2]), // Parse double
-                        RegistrationStatus.valueOf(parts[3]) // Parse Enum
+                        Double.parseDouble(parts[2]), 
+                        RegistrationStatus.valueOf(parts[3]) // Có thể lỗi nếu status không viết hoa
                     ));
                 }
             }
