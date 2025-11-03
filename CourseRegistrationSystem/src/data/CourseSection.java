@@ -112,16 +112,9 @@ public class CourseSection implements Identifiable, FileSerializable {
 
     @Override
     public String toString() {
-        return "CourseSection{"
-                + "courseSectionId='" + courseSectionId + '\''
-                + ", subjectId='" + subjectId + '\''
-                + ", semester=" + semester
-                + ", maxStudents=" + maxStudents
-                + ", currentStudentCount=" + currentStudentCount
-                + ", dayOfWeek='" + dayOfWeek + '\''
-                + ", startSlot=" + startSlot
-                + ", endSlot=" + endSlot
-                + '}';
+        return String.format("%s|%s|%d|%d|%d|%s|%d|%d",
+                courseSectionId, subjectId, semester, maxStudents, currentStudentCount,
+                dayOfWeek, startSlot, endSlot);
     }
 
     @Override

@@ -68,11 +68,7 @@ public class Registration implements Identifiable, FileSerializable {
 
     @Override
     public String toString() { 
-        return "Registration{"
-                + "studentId='" + studentId + '\''
-                + ", courseSectionId='" + courseSectionId + '\''
-                + ", grade=" + grade
-                + ", status=" + status
-                + '}';
+        return  String.format("%s|%s|%.2f|%s",
+                studentId, courseSectionId, grade, status.name());
     }
 }

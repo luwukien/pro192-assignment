@@ -63,12 +63,7 @@ public class Student extends Person implements Identifiable, FileSerializable {
     
     @Override
     public String toString() {
-        return "Student{"
-                + "studentId='" + studentId + '\''
-                + ", fullName='" + fullName + '\''
-                + ", major='" + major + '\''
-                + ", status=" + status
-                + '}';
+        return String.format("%s|%s|%s|%s|%s", studentId, fullName, major, email, status.name());
     }
 
     @Override

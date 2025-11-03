@@ -71,15 +71,14 @@ public class Subject implements Identifiable, FileSerializable {
         String prereqString = prerequisiteSubjectIds.isEmpty() ? "" : 
                               prerequisiteSubjectIds.stream().collect(Collectors.joining(","));
         return String.format("%s|%s|%d|%s",
-            subjectId, subjectName, credits, prereqString);
+            subjectId, subjectName, credit, prereqString);
     }
     
     @Override
     public String toString() { 
-        return "Subject{" +
-               "subjectId='" + subjectId + '\'' +
-               ", name='" + subjectName + '\'' +
-               ", credits=" + credits +
-               '}';
+        String prereqString = prerequisiteSubjectIds.isEmpty() ? "" : 
+                              prerequisiteSubjectIds.stream().collect(Collectors.joining(","));
+        return String.format("%s|%s|%d|%s",
+            subjectId, subjectName, credit, prereqString);
     }
 }
