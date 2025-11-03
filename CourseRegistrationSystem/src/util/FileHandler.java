@@ -4,7 +4,7 @@ import java.io.*;
 import java.util.*;
 import interfaces.FileSerializable;
 import data.*; 
-import data.enums.*; 
+import enums.*; 
 
 public class FileHandler {
     public static final String STUDENT_FILE = "students.txt";
@@ -23,7 +23,7 @@ public class FileHandler {
         }
     }
     
-    public List<Student> loadStudents(String fileName) {
+    public static List<Student> loadStudents(String fileName) {
         List<Student> students = new ArrayList<>();
         try (BufferedReader br = new BufferedReader(new FileReader(fileName))) {
             String line;
@@ -46,7 +46,7 @@ public class FileHandler {
         return students;
     }
 
-    public List<Subject> loadSubjects(String fileName) {
+    public static List<Subject> loadSubjects(String fileName) {
         List<Subject> subjects = new ArrayList<>();
         try (BufferedReader br = new BufferedReader(new FileReader(fileName))) {
             String line;
@@ -74,7 +74,7 @@ public class FileHandler {
         return subjects;
     }
     
-    public List<CourseSection> loadCourseSections(String fileName) {
+    public static List<CourseSection> loadCourseSections(String fileName) {
         List<CourseSection> sections = new ArrayList<>();
         try (BufferedReader br = new BufferedReader(new FileReader(fileName))) {
             String line;
@@ -102,7 +102,7 @@ public class FileHandler {
     }
 
     // 4. loadRegistrations 
-    public List<Registration> loadRegistrations(String fileName) {
+    public static List<Registration> loadRegistrations(String fileName) {
         List<Registration> registrations = new ArrayList<>();
         try (BufferedReader br = new BufferedReader(new FileReader(fileName))) {
             String line;

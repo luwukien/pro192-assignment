@@ -4,7 +4,7 @@ import data.Student;
 import data.Subject;
 import data.CourseSection;
 import data.Registration;
-import data.enums.StudentStatus;
+import enums.StudentStatus;
 import manager.*;
 import util.FileHandler;
 import util.Menu;
@@ -68,23 +68,32 @@ public class CourseRegistrationSystem {
 
         // 3. Khởi tạo RegistrationManager (Chỉ truyền Course và Subject)
         // GIẢ ĐỊNH Constructor mới: RegistrationManager(List, CourseManager, SubjectManager)
+        
+        /// TRuyền vào một tham số thôi 
+        /*
         registrationManager = new RegistrationManager(
             initialRegistrations,
             courseManager,
             subjectManager
         );
-
+        */
+        
         // 4. Khởi tạo StudentManager (Cần RegistrationManager)
+        /*
         studentManager = new StudentManager(
             initialStudents,
             registrationManager
         );
-
+        */
+        
         // 5. Gán StudentManager đã khởi tạo cho RegistrationManager (GIẢI QUYẾT PHỤ THUỘC VÒNG)
         // YÊU CẦU: Lớp RegistrationManager phải có public void setStudentManager(StudentManager sm)
-        // Đây là bước quan trọng nhất để fix lỗi!
+        // Đây là bước quan trọng nhất để fix lỗi! 
+        // làm gì có cái hàm nào seetStudentManager??
+        /*
         registrationManager.setStudentManager(studentManager);
-
+        */
+        
         System.out.println("System initialized successfully.");
         System.out.println("---------------------------");
     }
@@ -139,7 +148,7 @@ public class CourseRegistrationSystem {
         String email = Validator.getString("Enter Email: ", "Invalid email format.", "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,6}$");
 
         // Tạo đối tượng Student (5 tham số)
-        data.Student newStudent = new data.Student(id, fullName, major, email, data.enums.StudentStatus.ACTIVE);
+        data.Student newStudent = new data.Student(id, fullName, major, email, enums.StudentStatus.ACTIVE);
 
         if (studentManager.add(newStudent)) {
             System.out.println("Student added successfully: " + newStudent);
@@ -168,6 +177,8 @@ public class CourseRegistrationSystem {
             System.out.println("No student found with name containing: " + name);
         }
     }
+    //SỬA
+    /*
     private void handleDeleteStudent() {
         System.out.println("\n--- DELETE STUDENT ---");
         String id = Validator.getString("Enter Student ID to delete: ", "ID cannot be empty.");
@@ -177,6 +188,7 @@ public class CourseRegistrationSystem {
             System.out.println("Failed to delete student.");
         }
     }
+    */
     private void handleUpdateStudent() {
         System.out.println("\n--- UPDATE STUDENT INFORMATION ---");
         String id = Validator.getString("Enter Student ID to update: ", "ID cannot be empty.");
@@ -299,7 +311,7 @@ public class CourseRegistrationSystem {
         }
 
         // 2. Cập nhật Số tín chỉ
-        int currentCredits = subjectToUpdate.getCredits();
+        int currentCredits = subjectToUpdate.getCredit();
         System.out.println("Current credits: " + currentCredits);
 
         // Lấy input chuỗi và parse thủ công để cho phép người dùng nhập rỗng (giữ nguyên)
@@ -312,7 +324,7 @@ public class CourseRegistrationSystem {
             try {
                 int newCredits = Integer.parseInt(newCreditsStr);
                 if (newCredits >= 1 && newCredits <= 10) {
-                    subjectToUpdate.setCredits(newCredits);
+                    subjectToUpdate.setCredit(newCredits);
                 } else {
                     System.out.println("Warning: Credits must be between 1-10. Keeping old value.");
                 }
@@ -329,6 +341,9 @@ public class CourseRegistrationSystem {
             System.out.println("Update failed.");
         }
     }
+    
+    //SỬA
+    /*
     private void handleDeleteSubject() {
         String id = Validator.getString("Enter Subject ID to delete: ", "ID cannot be empty.");
         if (subjectManager.delete(id)) {
@@ -337,11 +352,12 @@ public class CourseRegistrationSystem {
             System.out.println("Failed to delete subject.");
         }
     }
+    */
 
     // ---------------------------------------------------------------------
     // XỬ LÝ MENU QUẢN LÝ HỌC PHẦN (CASE 3)
     // ---------------------------------------------------------------------
-
+    
     private void handleCourseManagement() {
         int choice;
         do {
@@ -358,6 +374,9 @@ public class CourseRegistrationSystem {
             }
         } while (choice != 7);
     }
+    
+    //SỬA
+    /*
     private void handleAddCourseSection() {
         System.out.println("\n--- ADD NEW COURSE SECTION ---");
         String subjectId;
@@ -391,6 +410,9 @@ public class CourseRegistrationSystem {
             System.out.println("Failed to add course section (ID might already exist).");
         }
     }
+
+    */
+    
     private void handleFindCourseSectionById() {
         System.out.println("\n--- FIND COURSE SECTION BY ID ---");
         String id = Validator.getString("Enter Course Section ID to find: ", "ID cannot be empty.");
@@ -402,11 +424,14 @@ public class CourseRegistrationSystem {
             System.out.println("Course section not found with ID: " + id);
         }
     }
+    
+    //SỬA
+    /*
     private void handleFindCourseSectionBySubjectId() {
         System.out.println("\n--- FIND COURSE SECTION BY SUBJECT ID ---");
         String id = Validator.getString("Enter Subject ID to find: ", "ID cannot be empty.");
         // Giả sử bạn giữ lại hàm findBySubjectId trong CourseManager
-        List<data.CourseSection> results = courseManager.findBySubjectId(id);
+        List<data.CourseSection> results = registrationManager.findBySubjectId(id);
 
         if (!results.isEmpty()) {
             System.out.println("=== SEARCH RESULTS FOR SUBJECT " + id + " ===");
@@ -415,6 +440,8 @@ public class CourseRegistrationSystem {
             System.out.println("No course sections found for Subject ID: " + id);
         }
     }
+    */
+    
     private void handleUpdateCourseSection() {
         System.out.println("\n--- UPDATE COURSE SECTION INFORMATION ---");
         String id = Validator.getString("Enter Course Section ID to update: ", "ID cannot be empty.");
@@ -459,6 +486,9 @@ public class CourseRegistrationSystem {
             System.out.println("Update failed.");
         }
     }
+    
+    //SỬA
+    /*
     private void handleDeleteCourseSection() {
         String id = Validator.getString("Enter Course Section ID to delete: ", "ID cannot be empty.");
         if (courseManager.delete(id)) {
@@ -467,7 +497,7 @@ public class CourseRegistrationSystem {
             System.out.println("Failed to delete course section.");
         }
     }
-
+    */
 
     private void handleRegistrationManagement() {
         int choice;
@@ -519,8 +549,8 @@ public class CourseRegistrationSystem {
         }
 
         // Kiểm tra xem môn học đã có điểm hay đã kết thúc chưa
-        if (reg.getStatus() == data.enums.RegistrationStatus.PASSED ||
-            reg.getStatus() == data.enums.RegistrationStatus.FAILED) {
+        if (reg.getStatus() == enums.RegistrationStatus.PASSED ||
+            reg.getStatus() == enums.RegistrationStatus.FAILED) {
             System.out.println("Warning: This course section already has a grade (Status: " + reg.getStatus() + ").");
         }
 
