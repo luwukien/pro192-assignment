@@ -1,10 +1,10 @@
-MAE101|Đại số tuyến tính|3|
-PRO192|Lập trình Java|3|MAE101
-CSD201|Cấu trúc dữ liệu|4|PRO192
-PRF192|Lập trình C|3|
-DBI202|Hệ quản trị CSDL|3|PRO192
-PRN211|Lập trình C#|3|PRO192
-PRJ301|Lập trình Web tĩnh|4|CSD201
-WED201|Thiết kế Web|3|
-JPD120|Tiếng Nhật 1|2|
-MAD101|Toán rời rạc|3|MAE101
+MAE101|Dai so tuyen tinh|3|
+PRO192|Lap trinh Java|3|MAE101
+CSD201|Cau truc du lieu|4|PRO192
+PRF192|Lap trinh C|3|
+DBI202|He quan tri CSDL|3|PRO192
+PRN211|Lap trinh C#|3|PRO192
+PRJ301|Lap trinh Web tinh|4|CSD201
+WED201|Thiet ke Web|3|
+JPD120|Tieng Nhat 1|2|
+MAD101|Toan roi rac|3|MAE101

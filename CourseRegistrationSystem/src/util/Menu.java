@@ -19,8 +19,8 @@ public class Menu {
         int max = options.size();
         
         return Validator.getInt(
-                "Nhập lựa chọn của bạn [" + min + "-" + max + "]: ",
-                "Lựa chọn không hợp lệ!",
+                "Enter your choice [" + min + "-" + max + "]: ",
+                "Invalid choice!",
                 min,
                 max
         );
@@ -28,77 +28,77 @@ public class Menu {
     
     public static int showMainMenu() {
         List<String> options = new ArrayList<>();
-        options.add("Quản lý Sinh viên");
-        options.add("Quản lý Môn học");
-        options.add("Quản lý Học phần mở");
-        options.add("Quản lý Đăng ký/Điểm");
-        options.add("Báo cáo và Thống kê");
-        options.add("Lưu và Thoát");
+        options.add("Student Management");
+        options.add("Subject Management");
+        options.add("Course Section Management");
+        options.add("Registration/Grade Management");
+        options.add("Reports and Statistics");
+        options.add("Save and Exit");
         
-        return getChoice("HỆ THỐNG ĐĂNG KÝ HỌC PHẦN", options);
+        return getChoice("COURSE REGISTRATION SYSTEM", options);
     }
     
 
     public static int showStudentManagementMenu() {
         List<String> options = new ArrayList<>();
-        options.add("Thêm sinh viên mới");
-        options.add("Tìm kiếm sinh viên theo ID");
-        options.add("Tìm kiếm sinh viên theo Tên");
-        options.add("Cập nhật thông tin sinh viên");
-        options.add("Xóa sinh viên");
-        options.add("Hiển thị tất cả sinh viên (Sắp xếp theo tên)");
-        options.add("Sắp xếp theo GPA tổng");
-        options.add("Quay lại Menu chính");
+        options.add("Add new student");
+        options.add("Search student by ID");
+        options.add("Search student by Name");
+        options.add("Update student information");
+        options.add("Delete student");
+        options.add("Display all students (Sorted by name)");
+        options.add("Sort by total GPA");
+        options.add("Return to Main Menu");
 
-        return getChoice("QUẢN LÝ SINH VIÊN", options); 
+        return getChoice("STUDENT MANAGEMENT", options); 
     }
 
     public static int showSubjectManagementMenu() {
         List<String> options = new ArrayList<>();
-        options.add("Thêm môn học mới");
-        options.add("Tìm kiếm môn học theo ID");
-        options.add("Cập nhật thông tin môn học");
-        options.add("Xóa môn học");
-        options.add("Hiển thị tất cả môn học");
-        options.add("Quay lại Menu chính");
+        options.add("Add new subject");
+        options.add("Search subject by ID");
+        options.add("Update subject information");
+        options.add("Delete subject");
+        options.add("Display all subjects");
+        options.add("Return to Main Menu");
 
-        return getChoice("QUẢN LÝ MÔN HỌC", options);
+        return getChoice("SUBJECT MANAGEMENT", options);
     }
 
 
     public static int showCourseManagementMenu() {
         List<String> options = new ArrayList<>();
-        options.add("Thêm học phần mới");
-        options.add("Tìm kiếm học phần theo ID");
-        options.add("Tìm kiếm học phần theo ID môn học");
-        options.add("Cập nhật thông tin học phần");
-        options.add("Xóa học phần");
-        options.add("Hiển thị tất cả học phần");
-        options.add("Quay lại Menu chính");
+        options.add("Add new course section");
+        options.add("Search course section by ID");
+        options.add("Search course section by Subject ID");
+        options.add("Update course section information");
+        options.add("Delete course section");
+        options.add("Display all course sections");
+        options.add("Return to Main Menu");
 
-        return getChoice("QUẢN LÝ HỌC PHẦN MỞ", options);
+        return getChoice("COURSE SECTION MANAGEMENT", options);
     }
     
 
     public static int showRegistrationManagementMenu() {
         List<String> options = new ArrayList<>();
-        options.add("Đăng ký học phần");
-        options.add("Hủy đăng ký học phần");
-        options.add("Nhập điểm môn học");
-        options.add("Xem danh sách đăng ký của sinh viên");
-        options.add("Xem danh sách sinh viên theo học phần");
-        options.add("Quay lại Menu chính");
+        options.add("Register for course section");
+        options.add("Cancel course registration");
+        options.add("Enter student grades");
+        options.add("View student’s registration list");
+        options.add("View list of students by course section");
+        options.add("Return to Main Menu");
         
-        return getChoice("QUẢN LÝ ĐĂNG KÝ VÀ ĐIỂM", options);
+        return getChoice("REGISTRATION AND GRADES MANAGEMENT", options);
     }
 
  
     public static int showReportMenu() {
         List<String> options = new ArrayList<>();
-        options.add("Tính GPA tổng cho sinh viên");
-        options.add("Tính GPA theo học kỳ");
-        options.add("Quay lại Menu chính");
+        options.add("Calculate overall GPA for student");
+        options.add("Calculate GPA by semester");
+        options.add("Return to Main Menu");
         
-        return getChoice("BÁO CÁO VÀ THỐNG KÊ", options);
+        return getChoice("REPORTS AND STATISTICS", options);
     }
 }

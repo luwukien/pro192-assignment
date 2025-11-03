@@ -2,24 +2,13 @@ package util;
 
 import java.util.Scanner;
 
-/**
- * Lớp tiện ích tĩnh dùng để quản lý nhập liệu từ người dùng 
- * và xác thực tính hợp lệ của dữ liệu.
- */
 public class Validator {
 
-    // Sử dụng static final Scanner để tránh rò rỉ tài nguyên và đảm bảo hiệu suất
+    // Use static final Scanner to avoid resource leaks and ensure efficiency
     private static final Scanner SC = new Scanner(System.in);
     
-    // --- Phương thức hỗ trợ nhập liệu chung ---
-    
-    /**
-     * Lấy một chuỗi từ người dùng, đảm bảo chuỗi không rỗng.
-     * Khớp với: +getString(String prompt, String errorMsg): String
-     * @param prompt Thông điệp hiển thị cho người dùng.
-     * @param errorMsg Thông báo lỗi nếu người dùng nhập rỗng.
-     * @return Chuỗi hợp lệ được nhập từ console.
-     */
+    // --- Common input helper methods ---
+
     public static String getString(String prompt, String errorMsg) {
         String input;
         do {
@@ -32,14 +21,6 @@ public class Validator {
         } while (true);
     }
 
-    /**
-     * Lấy một chuỗi từ người dùng, đảm bảo chuỗi khớp với biểu thức chính quy (regex).
-     * Khớp với: +getString(String prompt, String errorMsg, String regex): String
-     * @param prompt Thông điệp hiển thị cho người dùng.
-     * @param errorMsg Thông báo lỗi chung.
-     * @param regex Biểu thức chính quy để kiểm tra định dạng.
-     * @return Chuỗi hợp lệ được nhập từ console.
-     */
     public static String getString(String prompt, String errorMsg, String regex) {
         String input;
         do {
@@ -47,21 +28,12 @@ public class Validator {
             if (input.matches(regex)) {
                 return input;
             }
-            System.out.println(errorMsg + " (Định dạng sai)");
+            System.out.println(errorMsg + " (Invalid format)");
         } while (true);
     }
     
-    // --- Phương thức hỗ trợ nhập số nguyên (Integer) ---
+    // --- Integer input helper method ---
 
-    /**
-     * Lấy một số nguyên từ người dùng, đảm bảo số nằm trong khoảng [lowerBound, upperBound].
-     * Khớp với: +getInt(String prompt, String errorMsg, int lowerBound, int upperBound): int
-     * @param prompt Thông điệp hiển thị cho người dùng.
-     * @param errorMsg Thông báo lỗi nếu nhập sai định dạng hoặc ngoài phạm vi.
-     * @param lowerBound Giới hạn dưới (bao gồm).
-     * @param upperBound Giới hạn trên (bao gồm).
-     * @return Số nguyên hợp lệ được nhập từ console.
-     */
     public static int getInt(String prompt, String errorMsg, int lowerBound, int upperBound) {
         int number;
         do {
@@ -71,24 +43,15 @@ public class Validator {
                 if (number >= lowerBound && number <= upperBound) {
                     return number;
                 }
-                System.out.println(errorMsg + " (Giá trị phải nằm trong khoảng [" + lowerBound + ", " + upperBound + "])");
+                System.out.println(errorMsg + " (Value must be within the range [" + lowerBound + ", " + upperBound + "])");
             } catch (NumberFormatException e) {
-                System.out.println(errorMsg + " (Vui lòng nhập một số nguyên)");
+                System.out.println(errorMsg + " (Please enter an integer)");
             }
         } while (true);
     }
     
-    // --- Phương thức hỗ trợ nhập số thực (Double) ---
+    // --- Double input helper method ---
 
-    /**
-     * Lấy một số thực từ người dùng, đảm bảo số nằm trong khoảng [min, max].
-     * Khớp với: +getDouble(String prompt, String errorMsg, double min, double max): double
-     * @param prompt Thông điệp hiển thị cho người dùng.
-     * @param errorMsg Thông báo lỗi nếu nhập sai định dạng hoặc ngoài phạm vi.
-     * @param min Giới hạn dưới (bao gồm).
-     * @param max Giới hạn trên (bao gồm).
-     * @return Số thực hợp lệ được nhập từ console.
-     */
     public static double getDouble(String prompt, String errorMsg, double min, double max) {
         double number;
         do {
@@ -98,21 +61,15 @@ public class Validator {
                 if (number >= min && number <= max) {
                     return number;
                 }
-                System.out.println(errorMsg + " (Giá trị phải nằm trong khoảng [" + min + ", " + max + "])");
+                System.out.println(errorMsg + " (Value must be within the range [" + min + ", " + max + "])");
             } catch (NumberFormatException e) {
-                System.out.println(errorMsg + " (Vui lòng nhập một số thực)");
+                System.out.println(errorMsg + " (Please enter a decimal number)");
             }
         } while (true);
     }
 
-    // --- Phương thức tiện ích khác ---
+    // --- Other utility methods ---
 
-    /**
-     * Đọc một giá trị boolean (Y/N) từ người dùng.
-     * @param prompt Thông điệp hiển thị cho người dùng.
-     * @param errorMsg Thông báo lỗi.
-     * @return true nếu người dùng nhập 'Y' hoặc 'y', false nếu nhập 'N' hoặc 'n'.
-     */
     public static boolean getYesNo(String prompt, String errorMsg) {
         String input;
         do {
@@ -122,7 +79,7 @@ public class Validator {
             } else if (input.equalsIgnoreCase("N")) {
                 return false;
             }
-            System.out.println(errorMsg + " (Vui lòng nhập 'Y' hoặc 'N')");
+            System.out.println(errorMsg + " (Please enter 'Y' or 'N')");
         } while (true);
     }
 }
