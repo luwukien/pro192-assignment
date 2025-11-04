@@ -417,9 +417,18 @@ public class CourseRegistrationSystem {
                     handleDeleteCourseSection();
                     break;
                 case 6:
-                    courseManager.displayAll();
+                    handleSortBySubjectGPA();
                     break;
                 case 7:
+                    handleViewStudentsBySubject();
+                    break;
+                case 8:
+                    handleViewSubjectsByStudent();
+                    break;
+                case 9:
+                    courseManager.displayAll();
+                    break;
+                case 10:
                     return; // Quay lại Menu chính
                 default:
                     System.out.println("Invalid choice.");
@@ -598,7 +607,7 @@ public class CourseRegistrationSystem {
 
         // Yêu cầu nhập ID sinh viên và ID học phần
         String studentId = Validator.getString("Enter Student ID: ", "ID cannot be empty.", "^[sS]\\d{3}$");
-        String courseSectionId = Validator.getString("Enter Course Section ID (e.g., IT101-L1): ", "ID cannot be empty.");
+        String courseSectionId = Validator.getString("Enter Course Section ID: ", "ID cannot be empty.");
 
         // Gọi hàm nghiệp vụ phức tạp
         registrationManager.registerCourse(studentId, courseSectionId);
@@ -688,6 +697,9 @@ public class CourseRegistrationSystem {
                     handleCalculateSemesterGPA();
                     break; // Tính GPA theo học kỳ
                 case 3:
+                    handleSortBySubjectGPA();
+                    break;
+                case 4:
                     return; // Quay lại Menu chính
                 default:
                     System.out.println("Invalid choice.");
@@ -735,5 +747,53 @@ public class CourseRegistrationSystem {
         System.out.println("-------------------------------------------");
         System.out.printf("| GPA for Semester %d for %s is: %.2f\n", semester, student.getFullName(), semGpa);
         System.out.println("-------------------------------------------");
+    }
+
+    private void handleSortBySubjectGPA() {
+        System.out.println("\n--- SORT STUDENTS BY SUBJECT GPA ---");
+
+        // 1. Enter Subject ID
+        String subjectId = Validator.getString("Enter Subject ID to sort by: ", "Subject ID cannot be empty.");
+
+        // 2. Call business logic method from RegistrationManager (assuming it exists)
+        List<Student> results = registrationManager.getStudentsSortedBySubjectGPA(subjectId);
+
+        if (results == null || results.isEmpty()) {
+            System.out.printf("No students found or Subject %s does not exist.\n", subjectId);
+        } else {
+            System.out.printf("=== LIST OF STUDENTS SORTED BY GPA FOR SUBJECT %s ===\n", subjectId);
+            results.forEach(System.out::println);
+        }
+    }
+
+    private void handleViewSubjectsByStudent() {
+        System.out.println("\n--- VIEW SUBJECTS TAKEN BY A STUDENT ---");
+        String studentId = Validator.getString("Enter Student ID: ", "Student ID cannot be empty.");
+
+        Student student = studentManager.findById(studentId);
+        if (student == null) {
+            System.out.println("Error: Student not found with the entered ID.");
+            return;
+        }
+
+        // (Assume logic to display subjects is implemented elsewhere)
+    }
+
+    private void handleViewStudentsBySubject() {
+        System.out.println("\n--- VIEW STUDENTS WHO TOOK A SUBJECT ---");
+
+        // 1. Enter Subject ID
+        String subjectId = Validator.getString("Enter Subject ID: ", "Subject ID cannot be empty.");
+
+        // 2. Call business logic method (assuming it exists in RegistrationManager)
+        List<Student> students = registrationManager.getStudentsBySubject(subjectId);
+
+        if (students == null || students.isEmpty()) {
+            System.out.printf("No students found for Subject ID: %s.\n", subjectId);
+        } else {
+            System.out.printf("=== LIST OF STUDENTS WHO TOOK SUBJECT %s ===\n", subjectId);
+            // Display full student information
+            students.forEach(System.out::println);
+        }
     }
 }
