@@ -30,7 +30,7 @@ public class RegistrationManager extends Management<Registration> implements Dis
     public boolean registerCourse(String studentId, String courseSectionId) {
         studentId = studentId.toUpperCase();
         courseSectionId = courseSectionId.toUpperCase();
-
+        //Thiếu logic xem studentID đó đang trong trạng thái gì/ Chỉ sv active mới được đăng kí.
         Student student = studentManager.findById(studentId);
         CourseSection course = courseManager.findById(courseSectionId);
 

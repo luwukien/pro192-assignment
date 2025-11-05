@@ -5,6 +5,7 @@ import data.Subject;
 import data.CourseSection;
 import data.Registration;
 import enums.DayOfWeek;
+import enums.StudentStatus;
 import manager.*;
 import util.FileHandler;
 import util.Menu;
@@ -155,10 +156,10 @@ public class CourseRegistrationSystem {
         String fullName = Validator.getString("Enter Full Name: ", "Name cannot be empty.");
         String major = Validator.getString("Enter Major: ", "Major cannot be empty.");
         String email = Validator.getString("Enter Email: ", "Invalid email format.",
-                "^[a-z0-9]+(\\.[a-z0-9]+)*@fpt\\.edu\\.vn$");
+                "^[a-zA-Z0-9]+(\\.[a-zA-Z0-9]+)*@fpt\\.edu\\.vn$");
 
         // Tạo đối tượng Student (5 tham số)
-        data.Student newStudent = new data.Student(id, fullName, major, email, enums.StudentStatus.ACTIVE);
+        Student newStudent = new Student(id.toUpperCase(), fullName.toUpperCase(), major.toUpperCase(), email.toUpperCase(), enums.StudentStatus.ACTIVE);
 
         if (studentManager.add(newStudent)) {
             System.out.println("Student added successfully: " + newStudent);
@@ -170,7 +171,8 @@ public class CourseRegistrationSystem {
     private void handleFindStudentById() {
         System.out.println("\n--- FIND STUDENT BY ID ---");
         String id = Validator.getString("Enter Student ID to find: ", "ID cannot be empty.");
-        data.Student s = studentManager.findById(id);
+        id = id.toUpperCase();
+        Student s = studentManager.findById(id);
         if (s != null) {
             System.out.println("Found student: " + s);
         } else {
@@ -210,7 +212,7 @@ public class CourseRegistrationSystem {
     private void handleUpdateStudent() {
         System.out.println("\n--- UPDATE STUDENT INFORMATION ---");
         String id = Validator.getString("Enter Student ID to update: ", "ID cannot be empty.");
-        data.Student studentToUpdate = studentManager.findById(id);
+        Student studentToUpdate = studentManager.findById(id);
 
         if (studentToUpdate == null) {
             System.out.println("Error: Student not found with ID: " + id);
@@ -220,25 +222,39 @@ public class CourseRegistrationSystem {
         System.out.println("--- Updating: " + studentToUpdate.getFullName() + " ---");
 
         String newFullName = Validator.getString(
-                "Enter new Full Name (Press Enter to keep '" + studentToUpdate.getFullName() + "'): ", null
+                "Enter new Full Name " + studentToUpdate.getFullName() + ": ", null
         );
         if (!newFullName.isEmpty()) {
             studentToUpdate.setFullName(newFullName);
         }
 
         String newMajor = Validator.getString(
-                "Enter new Major (Press Enter to keep '" + studentToUpdate.getMajor() + "'): ", null
+                "Enter new Major " + studentToUpdate.getMajor() + ": ", null
         );
         if (!newMajor.isEmpty()) {
             studentToUpdate.setMajor(newMajor);
         }
 
         String newEmail = Validator.getString(
-                "Enter new Email (Press Enter to keep '" + studentToUpdate.getEmail() + "'): ", null
+                "Enter new Email " + studentToUpdate.getEmail() + ": ", null
         );
         if (!newEmail.isEmpty()) {
             studentToUpdate.setEmail(newEmail);
         }
+        
+        StudentStatus status;
+        while (true) {
+            String studentStatus = Validator.getString("Enter status (ACTIVE, INACTIVE, GRADUATED): ", "Stutus cannot be empty.");
+
+            try {
+                status = StudentStatus.valueOf(studentStatus.toUpperCase());
+                break;
+            } catch (IllegalArgumentException e) {
+                System.out.println("Error: '" + studentStatus + "' is not valid. Trying enter (ACTIVE, INACTIVE, GRADUATED).");
+            }
+        }
+        
+        studentToUpdate.setStatus(status);
 
         if (studentManager.update(studentToUpdate)) {
             System.out.println("Student ID " + id + " updated successfully!");
@@ -339,7 +355,7 @@ public class CourseRegistrationSystem {
         // 1. Cập nhật Tên môn học
         String currentName = subjectToUpdate.getSubjectName();
         String newName = Validator.getString(
-                "Enter new Subject Name (Press Enter to keep '" + currentName + "'): ",
+                "Enter new Subject Name " + currentName + ": ",
                 null
         );
         if (!newName.isEmpty()) {
@@ -634,7 +650,7 @@ public class CourseRegistrationSystem {
         System.out.println("\n--- INPUT GRADE AND UPDATE STATUS ---");
 
         String studentId = Validator.getString("Enter Student ID: ", "", "^[sS]\\d{3}$");
-        
+
         List<Registration> list = registrationManager.getRegistrationsByStudent(studentId);
         if (list.isEmpty()) {
             System.out.println("Student " + studentId + " has not registered for any courses.");
@@ -643,7 +659,7 @@ public class CourseRegistrationSystem {
             System.out.println("=== REGISTRATION LIST FOR STUDENT " + studentId.toUpperCase() + " ===");
             list.forEach(System.out::println);
         }
-        
+
         String courseSectionId = Validator.getString("Enter Course Section ID: ", "");
 
         String regId = studentId.toUpperCase() + "_" + courseSectionId.toUpperCase();
