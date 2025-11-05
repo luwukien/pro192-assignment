@@ -12,7 +12,6 @@ import data.CourseSection;
 import data.Subject;
 import enums.RegistrationStatus;
 
-
 public class RegistrationManager extends Management<Registration> implements Displayable {
 
     private StudentManager studentManager;
@@ -29,11 +28,19 @@ public class RegistrationManager extends Management<Registration> implements Dis
     }
 
     public boolean registerCourse(String studentId, String courseSectionId) {
+        studentId = studentId.toUpperCase();
+        courseSectionId = courseSectionId.toUpperCase();
+
         Student student = studentManager.findById(studentId);
         CourseSection course = courseManager.findById(courseSectionId);
 
         //Input Student and Course check
-        if (student == null || course == null) {
+        if (student == null) {
+            System.out.println("Not found this student id: " + studentId);
+            return false;
+        }
+        if (course == null) {
+            System.out.println("Not found this course section id: " + courseSectionId);
             return false;
         }
 
@@ -63,6 +70,16 @@ public class RegistrationManager extends Management<Registration> implements Dis
             List<String> prerequisiteSubjects = subject.getPrerequisiteSubjectIds();
             List<Registration> studentRegistrations = this.getRegistrationsByStudent(studentId);
 
+            String currentSubjectId = course.getSubjectId();
+            for (Registration reg : this.list) {
+                CourseSection sec = courseManager.findById(reg.getCourseSectionId());
+                if (sec != null && (sec.getSubjectId().equals(currentSubjectId))) {
+                    if (reg.getStatus() == RegistrationStatus.PASSED || reg.getStatus() == RegistrationStatus.ENROLLED) {
+                        System.out.println("Error: Student PASSED or ENROLLED for this subject:  " + currentSubjectId + " in another class!");
+                        return false;
+                    }
+                }
+            }
             for (String preSubjectId : prerequisiteSubjects) {
                 boolean foundAndPassed = false;
 
@@ -161,6 +178,7 @@ public class RegistrationManager extends Management<Registration> implements Dis
     }
 
     public List<Registration> getRegistrationsByStudent(String studentId) {
+        studentId = studentId.toUpperCase();
         ArrayList<Registration> resultList = new ArrayList<>();
 
         for (Registration registration : this.list) {
@@ -171,11 +189,12 @@ public class RegistrationManager extends Management<Registration> implements Dis
         return resultList;
     }
 
+    ////
     public List<Registration> getRegistrationsByCourse(String sectionId) {
         ArrayList<Registration> resultList = new ArrayList<>();
 
         for (Registration registration : this.list) {
-            if (registration.getCourseSectionId().equals(sectionId)) {
+            if (registration.getCourseSectionId().equals(sectionId.toUpperCase())) {
                 resultList.add(registration);
             }
         }
@@ -183,6 +202,7 @@ public class RegistrationManager extends Management<Registration> implements Dis
 
     }
 
+    /////
     public List<Student> getStudentsByCourseSection(String courseSectionId) {
         ArrayList<Student> studentList = new ArrayList<>();
         List<Registration> regs = getRegistrationsByCourse(courseSectionId);

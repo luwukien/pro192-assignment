@@ -112,7 +112,8 @@ public class CourseSection implements Identifiable, FileSerializable {
 
     @Override
     public String toString() {
-        return String.format("%s|%s|%d|%d|%d|%s|%d|%d",
+        String dataFormat = "%-10s | %-8s | %-3d | %-3d | %-3d | %-5s | %-3d | %-3d";
+        return String.format(dataFormat,
                 courseSectionId, subjectId, semester, maxStudents, currentStudentCount,
                 dayOfWeek, startSlot, endSlot);
     }

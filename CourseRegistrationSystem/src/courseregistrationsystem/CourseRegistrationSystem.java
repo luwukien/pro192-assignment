@@ -144,7 +144,7 @@ public class CourseRegistrationSystem {
         System.out.println("\n--- ADD NEW STUDENT ---");
         String id;
         do {
-            id = Validator.getString("Enter Student ID (e.g., S1001): ", "Invalid or empty ID.", "^[sS]\\d{3}$");
+            id = Validator.getString("Enter Student ID (e.g., S101): ", "Invalid or empty ID.", "^[sS]\\d{3}$");
             if (studentManager.findById(id) != null) {
                 System.out.println("Error: Student ID already exists. Please enter a different ID.");
             } else {
@@ -450,7 +450,7 @@ public class CourseRegistrationSystem {
             }
         } while (true);
 
-        String courseSectionId = Validator.getString("Enter Course Section ID (e.g., IT101-L1): ", "ID cannot be empty.");
+        String courseSectionId = Validator.getString("Enter Course Section ID (e.g., C201_C1): ", "ID cannot be empty.");
         int semester = Validator.getInt("Enter Semester (1-10): ", "Semester must be an integer.", 1, 10);
         int maxStudents = Validator.getInt("Enter Max Students (10-100): ", "Student count must be valid.", 10, 100);
 
@@ -471,7 +471,7 @@ public class CourseRegistrationSystem {
         int endSlot = Validator.getInt("Enter End Slot (" + startSlot + "-10): ", "Slot must be valid.", startSlot, 10);
 
         data.CourseSection newCS = new data.CourseSection(
-                courseSectionId, subjectId, semester, maxStudents,
+                courseSectionId.toUpperCase(), subjectId.toUpperCase(), semester, maxStudents,
                 0,
                 day, startSlot, endSlot
         );
@@ -601,15 +601,14 @@ public class CourseRegistrationSystem {
         } while (choice != 6);
 
     }
-
+    ///////////////
     private void handleRegisterForStudent() {
         System.out.println("\n--- REGISTER FOR COURSE ---");
 
-        // Yêu cầu nhập ID sinh viên và ID học phần
         String studentId = Validator.getString("Enter Student ID: ", "ID cannot be empty.", "^[sS]\\d{3}$");
+        courseManager.displayAll();
         String courseSectionId = Validator.getString("Enter Course Section ID: ", "ID cannot be empty.");
-
-        // Gọi hàm nghiệp vụ phức tạp
+        
         registrationManager.registerCourse(studentId, courseSectionId);
     }
 
@@ -617,19 +616,19 @@ public class CourseRegistrationSystem {
         System.out.println("\n--- WITHDRAW FROM COURSE ---");
 
         String studentId = Validator.getString("Enter Student ID to withdraw: ", "ID cannot be empty.", "^[sS]\\d{3}$");
+        courseManager.displayAll();
         String courseSectionId = Validator.getString("Enter Course Section ID to withdraw: ", "ID cannot be empty.");
 
-        // Gọi hàm nghiệp vụ
         registrationManager.withdrawCourse(studentId, courseSectionId);
     }
-
+    ///////////////
     private void handleInputGrade() {
         System.out.println("\n--- INPUT GRADE AND UPDATE STATUS ---");
 
         String studentId = Validator.getString("Enter Student ID: ", "ID cannot be empty.", "^[sS]\\d{3}$");
         String courseSectionId = Validator.getString("Enter Course Section ID: ", "ID cannot be empty.");
 
-        String regId = studentId + "_" + courseSectionId;
+        String regId = studentId.toUpperCase() + "_" + courseSectionId.toUpperCase();
         Registration reg = registrationManager.findById(regId);
 
         if (reg == null) {
@@ -666,7 +665,7 @@ public class CourseRegistrationSystem {
         if (list.isEmpty()) {
             System.out.println("Student " + studentId + " has not registered for any courses.");
         } else {
-            System.out.println("=== REGISTRATION LIST FOR STUDENT " + studentId + " ===");
+            System.out.println("=== REGISTRATION LIST FOR STUDENT " + studentId.toUpperCase() + " ===");
             list.forEach(System.out::println);
         }
     }
@@ -776,7 +775,6 @@ public class CourseRegistrationSystem {
             return;
         }
 
-        // (Assume logic to display subjects is implemented elsewhere)
     }
 
     private void handleViewStudentsBySubject() {
