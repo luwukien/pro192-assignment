@@ -125,7 +125,7 @@ public class CourseRegistrationSystem {
                     System.out.println("\n--- STUDENTS SORTED BY OVERALL GPA ---");
                     List<Student> sortedStudents = registrationManager.getStudentsSortedByOverallGPA();
                     if (sortedStudents.isEmpty()) {
-                        System.out.println("No studentsto display!");
+                        System.out.println("No students to display!");
                     } else {
                         for (Student student : sortedStudents) {
                             System.out.println(student);
@@ -601,32 +601,50 @@ public class CourseRegistrationSystem {
         } while (choice != 6);
 
     }
-    ///////////////
+
     private void handleRegisterForStudent() {
         System.out.println("\n--- REGISTER FOR COURSE ---");
 
-        String studentId = Validator.getString("Enter Student ID: ", "ID cannot be empty.", "^[sS]\\d{3}$");
+        String studentId = Validator.getString("Enter Student ID: ", "", "^[sS]\\d{3}$");
         courseManager.displayAll();
-        String courseSectionId = Validator.getString("Enter Course Section ID: ", "ID cannot be empty.");
-        
+        String courseSectionId = Validator.getString("Enter Course Section ID: ", "");
+
         registrationManager.registerCourse(studentId, courseSectionId);
     }
 
     private void handleWithdrawCourse() {
         System.out.println("\n--- WITHDRAW FROM COURSE ---");
 
-        String studentId = Validator.getString("Enter Student ID to withdraw: ", "ID cannot be empty.", "^[sS]\\d{3}$");
-        courseManager.displayAll();
-        String courseSectionId = Validator.getString("Enter Course Section ID to withdraw: ", "ID cannot be empty.");
+        String studentId = Validator.getString("Enter Student ID to withdraw: ", "", "^[sS]\\d{3}$");
+        List<Registration> list = registrationManager.getRegistrationsByStudent(studentId);
+        if (list.isEmpty()) {
+            System.out.println("Student " + studentId + " has not registered for any courses.");
+            return;
+        } else {
+            System.out.println("=== REGISTRATION LIST FOR STUDENT " + studentId.toUpperCase() + " ===");
+            list.forEach(System.out::println);
+        }
+
+        String courseSectionId = Validator.getString("Enter Course Section ID to withdraw: ", "");
 
         registrationManager.withdrawCourse(studentId, courseSectionId);
     }
-    ///////////////
+
     private void handleInputGrade() {
         System.out.println("\n--- INPUT GRADE AND UPDATE STATUS ---");
 
-        String studentId = Validator.getString("Enter Student ID: ", "ID cannot be empty.", "^[sS]\\d{3}$");
-        String courseSectionId = Validator.getString("Enter Course Section ID: ", "ID cannot be empty.");
+        String studentId = Validator.getString("Enter Student ID: ", "", "^[sS]\\d{3}$");
+        
+        List<Registration> list = registrationManager.getRegistrationsByStudent(studentId);
+        if (list.isEmpty()) {
+            System.out.println("Student " + studentId + " has not registered for any courses.");
+            return;
+        } else {
+            System.out.println("=== REGISTRATION LIST FOR STUDENT " + studentId.toUpperCase() + " ===");
+            list.forEach(System.out::println);
+        }
+        
+        String courseSectionId = Validator.getString("Enter Course Section ID: ", "");
 
         String regId = studentId.toUpperCase() + "_" + courseSectionId.toUpperCase();
         Registration reg = registrationManager.findById(regId);

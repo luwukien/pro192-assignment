@@ -71,7 +71,7 @@ public class RegistrationManager extends Management<Registration> implements Dis
             List<Registration> studentRegistrations = this.getRegistrationsByStudent(studentId);
 
             String currentSubjectId = course.getSubjectId();
-            for (Registration reg : this.list) {
+            for (Registration reg : studentRegistrations) {
                 CourseSection sec = courseManager.findById(reg.getCourseSectionId());
                 if (sec != null && (sec.getSubjectId().equals(currentSubjectId))) {
                     if (reg.getStatus() == RegistrationStatus.PASSED || reg.getStatus() == RegistrationStatus.ENROLLED) {
@@ -153,6 +153,8 @@ public class RegistrationManager extends Management<Registration> implements Dis
     }
 
     public boolean withdrawCourse(String studentId, String courseSectionId) {
+        studentId = studentId.toUpperCase();
+        courseSectionId = courseSectionId.toUpperCase();
         for (Registration registration : this.list) {
             if (registration.getCourseSectionId().equals(courseSectionId) && registration.getStudentId().equals(studentId)) {
                 Registration regTarget = registration;
@@ -163,6 +165,7 @@ public class RegistrationManager extends Management<Registration> implements Dis
                     if (section != null) {
                         section.decrementStudentCount();
                         courseManager.update(section);
+                        System.out.println("This student id: " + studentId + " withdrew this course id: " + courseSectionId + " successfully!");
                         return true;
                     }
 
@@ -173,7 +176,7 @@ public class RegistrationManager extends Management<Registration> implements Dis
             }
         }
 
-        System.out.println("This courseSectionID: " + courseSectionId + "is not found");
+        System.out.println("This course section ID: " + courseSectionId + " is not found");
         return false;
     }
 
