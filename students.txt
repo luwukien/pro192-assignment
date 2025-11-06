@@ -1,0 +1,14 @@
+S001|Nguyen Van An|SE|annv@fpt.edu.vn|ACTIVE
+S002|Tran Thi Binh|AI|binhtt@fpt.edu.vn|ACTIVE
+S003|Le Hoang Cuong|GD|cuonglh@fpt.edu.vn|ACTIVE
+S004|Pham Minh Duc|SE|ducpm@fpt.edu.vn|ACTIVE
+S005|Ho Thu Giang|AI|gianght@fpt.edu.vn|ACTIVE
+S006|Hoang Van Huy|IT|huyhv@fpt.edu.vn|ACTIVE
+S007|Do Ngoc Khanh|SE|khanhdn@fpt.edu.vn|ACTIVE
+S008|Vu Thanh Lam|AI|lamvt@fpt.edu.vn|ACTIVE
+S009|Mai Thi Nga|GD|ngamt@fpt.edu.vn|ACTIVE
+S010|Nguyen Quoc Phong|IT|phongnq@fpt.edu.vn|ACTIVE
+S011|Cao Xuan Quyet|SE|quyetcx@fpt.edu.vn|ACTIVE
+S012|Dinh Thi Thao|AI|thaodt@fpt.edu.vn|INACTIVE
+S013|Mai Xuan Tung|IT|tungmx@fpt.edu.vn|INACTIVE
+S999|Luu Chi Kien|IT|luukien2910@fpt.edu.vn|ACTIVE
