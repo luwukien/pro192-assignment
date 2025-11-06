@@ -97,8 +97,9 @@ public class Menu {
         List<String> options = new ArrayList<>();
         options.add("Calculate overall GPA for student");
         options.add("Calculate GPA by semester");
-        options.add("Return to Main Menu");
-        
-        return getChoice("REPORTS AND STATISTICS", options);
+        options.add("Sort by subject GPA"); // TÙY CHỌN THỨ 3 BỊ THIẾU
+        options.add("Return to Main Menu"); // TÙY CHỌN THỨ 4
+    
+    return getChoice("REPORTS AND STATISTICS", options);
     }
 }

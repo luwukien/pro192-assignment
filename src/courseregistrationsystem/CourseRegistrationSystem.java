@@ -697,23 +697,24 @@ public class CourseRegistrationSystem {
     private void handleReportMenu() {
         int choice;
         do {
-            choice = Menu.showReportMenu();
+            choice = Menu.showReportMenu(); 
             switch (choice) {
                 case 1:
                     handleCalculateOverallGPA();
-                    break; // Tính GPA tổng
+                    break;
                 case 2:
                     handleCalculateSemesterGPA();
-                    break; // Tính GPA theo học kỳ
-                case 3:
+                    break;
+                case 3: // Tùy chọn 3 mới: Sort by Subject GPA
                     handleSortBySubjectGPA();
                     break;
-                case 4:
-                    return; // Quay lại Menu chính
+                case 4: // Tùy chọn 4 mới: Return to Main Menu
+                    return; 
                 default:
                     System.out.println("Invalid choice.");
             }
-        } while (choice != 3);
+        // Điều kiện thoát: choice bằng số cuối cùng của menu (là 4)
+        } while (choice != 4); 
     }
 
     private void handleCalculateOverallGPA() {
