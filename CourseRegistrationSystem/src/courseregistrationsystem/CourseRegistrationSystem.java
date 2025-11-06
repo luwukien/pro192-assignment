@@ -241,7 +241,7 @@ public class CourseRegistrationSystem {
         if (!newEmail.isEmpty()) {
             studentToUpdate.setEmail(newEmail);
         }
-        
+
         StudentStatus status;
         while (true) {
             String studentStatus = Validator.getString("Enter status (ACTIVE, INACTIVE, GRADUATED): ", "Stutus cannot be empty.");
@@ -253,7 +253,7 @@ public class CourseRegistrationSystem {
                 System.out.println("Error: '" + studentStatus + "' is not valid. Trying enter (ACTIVE, INACTIVE, GRADUATED).");
             }
         }
-        
+
         studentToUpdate.setStatus(status);
 
         if (studentManager.update(studentToUpdate)) {
@@ -458,8 +458,9 @@ public class CourseRegistrationSystem {
 
         // 1. Kiểm tra Subject ID 
         do {
+            subjectManager.displayAll();
             subjectId = Validator.getString("Enter Subject ID for this course section: ", "ID cannot be empty.");
-            if (subjectManager.findById(subjectId) == null) {
+            if (subjectManager.findById(subjectId.toUpperCase()) == null) {
                 System.out.println("Error: Subject with ID " + subjectId + " does not exist. Please add the subject first.");
             } else {
                 break;
@@ -467,6 +468,7 @@ public class CourseRegistrationSystem {
         } while (true);
 
         String courseSectionId = Validator.getString("Enter Course Section ID (e.g., C201_C1): ", "ID cannot be empty.");
+
         int semester = Validator.getInt("Enter Semester (1-10): ", "Semester must be an integer.", 1, 10);
         int maxStudents = Validator.getInt("Enter Max Students (10-100): ", "Student count must be valid.", 10, 100);
 
@@ -479,7 +481,7 @@ public class CourseRegistrationSystem {
 
                 break;
             } catch (IllegalArgumentException e) {
-                System.out.println("Lỗi: '" + dayOfWeekInput + "' is not valid. Trying enter (MON, TUE, WED, THU, FRI, SAT).");
+                System.out.println("Error: '" + dayOfWeekInput + "' is not valid. Trying enter (MON, TUE, WED, THU, FRI, SAT).");
             }
         }
 
@@ -526,6 +528,7 @@ public class CourseRegistrationSystem {
 
     private void handleUpdateCourseSection() {
         System.out.println("\n--- UPDATE COURSE SECTION INFORMATION ---");
+        courseManager.displayAll();
         String id = Validator.getString("Enter Course Section ID to update: ", "ID cannot be empty.");
 
         CourseSection csToUpdate = courseManager.findById(id);
@@ -538,19 +541,27 @@ public class CourseRegistrationSystem {
         System.out.println("--- Updating: " + csToUpdate.getCourseSectionId() + " ---");
 
         System.out.println("Current Max Students: " + csToUpdate.getMaxStudents());
-        // Chỉ nhập nếu người dùng không nhập rỗng (Validator cần được chỉnh sửa để hỗ trợ nhập số và chuỗi rỗng)
-        String maxStr = Validator.getString("Enter new Max Students (Press Enter to keep): ", null);
-        if (!maxStr.isEmpty()) {
+        String maxStr;
+        while (true) {
+            maxStr = Validator.getString("Enter new Max Students: ", null);
+
+            if (maxStr.isEmpty()) {
+                System.out.println("No input detected. Keeping old value.");
+                break;
+            }
+
             try {
                 int newMax = Integer.parseInt(maxStr);
-                if (newMax >= csToUpdate.getCurrentStudentCount() && newMax > 0) {
+                if (newMax >= csToUpdate.getCurrentStudentCount() && newMax > 0 && newMax < 100) {
                     csToUpdate.setMaxStudents(newMax);
+                    break;
                 } else {
-                    System.out.println("Warning: Max Students must be greater than current count and > 0. Keeping old value.");
+                    System.out.println("Warning: Max Students must be greater than current students in this course, > 0 and < 100. Keeping old value.");
                 }
             } catch (NumberFormatException e) {
                 System.out.println("Format error. Keeping old value.");
             }
+
         }
 
         // Cập nhật Ngày học
@@ -569,7 +580,7 @@ public class CourseRegistrationSystem {
 
         // Gọi hàm update() từ Management
         if (courseManager.update(csToUpdate)) {
-            System.out.println("Course section ID " + id + " updated successfully!");
+            System.out.println("Course section ID " + id.toUpperCase() + " updated successfully!");
         } else {
             System.out.println("Update failed.");
         }

@@ -19,6 +19,7 @@ public abstract class Management<T extends Identifiable> {
     }
 
     public T findById(String id) {
+        id = id.toUpperCase();
         for (T item : list) {
             if (item.getId().equals(id)) {
                 return item;

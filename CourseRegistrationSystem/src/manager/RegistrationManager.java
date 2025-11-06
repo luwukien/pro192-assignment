@@ -138,6 +138,7 @@ public class RegistrationManager extends Management<Registration> implements Dis
     }
 
     private int calculateCurrentCredits(String studentId, int semester) {
+        studentId = studentId.toUpperCase();
         int totalCredits = 0;
 
         for (Registration registration : getRegistrationsByStudent(studentId)) {
@@ -192,12 +193,12 @@ public class RegistrationManager extends Management<Registration> implements Dis
         return resultList;
     }
 
-    ////
     public List<Registration> getRegistrationsByCourse(String sectionId) {
+        sectionId = sectionId.toUpperCase();
         ArrayList<Registration> resultList = new ArrayList<>();
 
         for (Registration registration : this.list) {
-            if (registration.getCourseSectionId().equals(sectionId.toUpperCase())) {
+            if (registration.getCourseSectionId().equals(sectionId)) {
                 resultList.add(registration);
             }
         }
@@ -205,8 +206,8 @@ public class RegistrationManager extends Management<Registration> implements Dis
 
     }
 
-    /////
     public List<Student> getStudentsByCourseSection(String courseSectionId) {
+        courseSectionId = courseSectionId.toUpperCase();
         ArrayList<Student> studentList = new ArrayList<>();
         List<Registration> regs = getRegistrationsByCourse(courseSectionId);
 
@@ -223,6 +224,7 @@ public class RegistrationManager extends Management<Registration> implements Dis
     }
 
     public List<Student> getStudentsBySubject(String subjectId) {
+        subjectId = subjectId.toUpperCase();
         Set<String> studentIds = new HashSet<>();
         List<CourseSection> sections = courseManager.getSectionsBySubject(subjectId);
         for (CourseSection section : sections) {
@@ -242,6 +244,7 @@ public class RegistrationManager extends Management<Registration> implements Dis
     }
 
     public List<Subject> getSubjectsByStudent(String studentId) {
+        studentId = studentId.toUpperCase();
         Set<String> subjectIds = new HashSet<>();
         List<Registration> regs = getRegistrationsByStudent(studentId);
         for (Registration reg : regs) {
@@ -278,8 +281,8 @@ public class RegistrationManager extends Management<Registration> implements Dis
         List<Student> sortedList = new ArrayList<>(allStudents);
 
         Collections.sort(sortedList, (s1, s2) -> {
-            double gpa1 = findGradeForSubject(s1.getStudentId(), subjectId);
-            double gpa2 = findGradeForSubject(s2.getStudentId(), subjectId);
+            double gpa1 = findGradeForSubject(s1.getStudentId(), subjectId.toUpperCase());
+            double gpa2 = findGradeForSubject(s2.getStudentId(), subjectId.toUpperCase());
 
             return Double.compare(gpa2, gpa1);
         });
@@ -287,6 +290,8 @@ public class RegistrationManager extends Management<Registration> implements Dis
     }
 
     private double findGradeForSubject(String studentId, String targetSubjectId) {
+        studentId = studentId.toUpperCase();
+        targetSubjectId = targetSubjectId.toUpperCase();
         List<Registration> regs = this.getRegistrationsByStudent(studentId);
         for (Registration registration : regs) {
             if (registration.getStatus() == RegistrationStatus.PASSED || registration.getStatus() == RegistrationStatus.FAILED) {
@@ -301,6 +306,7 @@ public class RegistrationManager extends Management<Registration> implements Dis
     }
 
     public double calculateOverallGPA(String studentId) {
+        studentId = studentId.toUpperCase();
         List<Registration> regs = this.getRegistrationsByStudent(studentId);
         double totalGradePoints = 0;
         int totalCredits = 0;
@@ -327,6 +333,7 @@ public class RegistrationManager extends Management<Registration> implements Dis
     }
 
     public double calculateSemesterGPA(String studentId, int semester) {
+        studentId = studentId.toUpperCase();
         List<Registration> regs = this.getRegistrationsByStudent(studentId);
         double totalGradePoints = 0;
         int totalCredits = 0;

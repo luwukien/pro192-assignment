@@ -12,6 +12,7 @@ public class CourseManager extends Management<CourseSection> implements Displaya
     }
 
     public List<CourseSection> getSectionsBySubject(String subjectId) {
+        subjectId = subjectId.toUpperCase();
         ArrayList<CourseSection> resultList = new ArrayList<>();
         for (CourseSection section : this.list) {
             if (section.getSubjectId().equals(subjectId)) {
