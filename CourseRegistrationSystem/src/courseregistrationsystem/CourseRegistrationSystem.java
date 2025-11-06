@@ -5,6 +5,7 @@ import data.Subject;
 import data.CourseSection;
 import data.Registration;
 import enums.DayOfWeek;
+import enums.StudentStatus;
 import manager.*;
 import util.FileHandler;
 import util.Menu;
@@ -125,7 +126,7 @@ public class CourseRegistrationSystem {
                     System.out.println("\n--- STUDENTS SORTED BY OVERALL GPA ---");
                     List<Student> sortedStudents = registrationManager.getStudentsSortedByOverallGPA();
                     if (sortedStudents.isEmpty()) {
-                        System.out.println("No studentsto display!");
+                        System.out.println("No students to display!");
                     } else {
                         for (Student student : sortedStudents) {
                             System.out.println(student);
@@ -144,7 +145,7 @@ public class CourseRegistrationSystem {
         System.out.println("\n--- ADD NEW STUDENT ---");
         String id;
         do {
-            id = Validator.getString("Enter Student ID (e.g., S1001): ", "Invalid or empty ID.", "^[sS]\\d{3}$");
+            id = Validator.getString("Enter Student ID (e.g., S101): ", "Invalid or empty ID.", "^[sS]\\d{3}$");
             if (studentManager.findById(id) != null) {
                 System.out.println("Error: Student ID already exists. Please enter a different ID.");
             } else {
@@ -155,10 +156,10 @@ public class CourseRegistrationSystem {
         String fullName = Validator.getString("Enter Full Name: ", "Name cannot be empty.");
         String major = Validator.getString("Enter Major: ", "Major cannot be empty.");
         String email = Validator.getString("Enter Email: ", "Invalid email format.",
-                "^[a-z0-9]+(\\.[a-z0-9]+)*@fpt\\.edu\\.vn$");
+                "^[a-zA-Z0-9]+(\\.[a-zA-Z0-9]+)*@fpt\\.edu\\.vn$");
 
         // Tạo đối tượng Student (5 tham số)
-        data.Student newStudent = new data.Student(id, fullName, major, email, enums.StudentStatus.ACTIVE);
+        Student newStudent = new Student(id.toUpperCase(), fullName.toUpperCase(), major.toUpperCase(), email.toUpperCase(), enums.StudentStatus.ACTIVE);
 
         if (studentManager.add(newStudent)) {
             System.out.println("Student added successfully: " + newStudent);
@@ -170,7 +171,8 @@ public class CourseRegistrationSystem {
     private void handleFindStudentById() {
         System.out.println("\n--- FIND STUDENT BY ID ---");
         String id = Validator.getString("Enter Student ID to find: ", "ID cannot be empty.");
-        data.Student s = studentManager.findById(id);
+        id = id.toUpperCase();
+        Student s = studentManager.findById(id);
         if (s != null) {
             System.out.println("Found student: " + s);
         } else {
@@ -210,7 +212,7 @@ public class CourseRegistrationSystem {
     private void handleUpdateStudent() {
         System.out.println("\n--- UPDATE STUDENT INFORMATION ---");
         String id = Validator.getString("Enter Student ID to update: ", "ID cannot be empty.");
-        data.Student studentToUpdate = studentManager.findById(id);
+        Student studentToUpdate = studentManager.findById(id);
 
         if (studentToUpdate == null) {
             System.out.println("Error: Student not found with ID: " + id);
@@ -220,25 +222,39 @@ public class CourseRegistrationSystem {
         System.out.println("--- Updating: " + studentToUpdate.getFullName() + " ---");
 
         String newFullName = Validator.getString(
-                "Enter new Full Name (Press Enter to keep '" + studentToUpdate.getFullName() + "'): ", null
+                "Enter new Full Name " + studentToUpdate.getFullName() + ": ", null
         );
         if (!newFullName.isEmpty()) {
             studentToUpdate.setFullName(newFullName);
         }
 
         String newMajor = Validator.getString(
-                "Enter new Major (Press Enter to keep '" + studentToUpdate.getMajor() + "'): ", null
+                "Enter new Major " + studentToUpdate.getMajor() + ": ", null
         );
         if (!newMajor.isEmpty()) {
             studentToUpdate.setMajor(newMajor);
         }
 
         String newEmail = Validator.getString(
-                "Enter new Email (Press Enter to keep '" + studentToUpdate.getEmail() + "'): ", null
+                "Enter new Email " + studentToUpdate.getEmail() + ": ", null
         );
         if (!newEmail.isEmpty()) {
             studentToUpdate.setEmail(newEmail);
         }
+        
+        StudentStatus status;
+        while (true) {
+            String studentStatus = Validator.getString("Enter status (ACTIVE, INACTIVE, GRADUATED): ", "Stutus cannot be empty.");
+
+            try {
+                status = StudentStatus.valueOf(studentStatus.toUpperCase());
+                break;
+            } catch (IllegalArgumentException e) {
+                System.out.println("Error: '" + studentStatus + "' is not valid. Trying enter (ACTIVE, INACTIVE, GRADUATED).");
+            }
+        }
+        
+        studentToUpdate.setStatus(status);
 
         if (studentManager.update(studentToUpdate)) {
             System.out.println("Student ID " + id + " updated successfully!");
@@ -339,7 +355,7 @@ public class CourseRegistrationSystem {
         // 1. Cập nhật Tên môn học
         String currentName = subjectToUpdate.getSubjectName();
         String newName = Validator.getString(
-                "Enter new Subject Name (Press Enter to keep '" + currentName + "'): ",
+                "Enter new Subject Name " + currentName + ": ",
                 null
         );
         if (!newName.isEmpty()) {
@@ -417,9 +433,18 @@ public class CourseRegistrationSystem {
                     handleDeleteCourseSection();
                     break;
                 case 6:
-                    courseManager.displayAll();
+                    handleSortBySubjectGPA();
                     break;
                 case 7:
+                    handleViewStudentsBySubject();
+                    break;
+                case 8:
+                    handleViewSubjectsByStudent();
+                    break;
+                case 9:
+                    courseManager.displayAll();
+                    break;
+                case 10:
                     return; // Quay lại Menu chính
                 default:
                     System.out.println("Invalid choice.");
@@ -441,7 +466,7 @@ public class CourseRegistrationSystem {
             }
         } while (true);
 
-        String courseSectionId = Validator.getString("Enter Course Section ID (e.g., IT101-L1): ", "ID cannot be empty.");
+        String courseSectionId = Validator.getString("Enter Course Section ID (e.g., C201_C1): ", "ID cannot be empty.");
         int semester = Validator.getInt("Enter Semester (1-10): ", "Semester must be an integer.", 1, 10);
         int maxStudents = Validator.getInt("Enter Max Students (10-100): ", "Student count must be valid.", 10, 100);
 
@@ -462,7 +487,7 @@ public class CourseRegistrationSystem {
         int endSlot = Validator.getInt("Enter End Slot (" + startSlot + "-10): ", "Slot must be valid.", startSlot, 10);
 
         data.CourseSection newCS = new data.CourseSection(
-                courseSectionId, subjectId, semester, maxStudents,
+                courseSectionId.toUpperCase(), subjectId.toUpperCase(), semester, maxStudents,
                 0,
                 day, startSlot, endSlot
         );
@@ -596,31 +621,48 @@ public class CourseRegistrationSystem {
     private void handleRegisterForStudent() {
         System.out.println("\n--- REGISTER FOR COURSE ---");
 
-        // Yêu cầu nhập ID sinh viên và ID học phần
-        String studentId = Validator.getString("Enter Student ID: ", "ID cannot be empty.", "^[sS]\\d{3}$");
-        String courseSectionId = Validator.getString("Enter Course Section ID (e.g., IT101-L1): ", "ID cannot be empty.");
+        String studentId = Validator.getString("Enter Student ID: ", "", "^[sS]\\d{3}$");
+        courseManager.displayAll();
+        String courseSectionId = Validator.getString("Enter Course Section ID: ", "");
 
-        // Gọi hàm nghiệp vụ phức tạp
         registrationManager.registerCourse(studentId, courseSectionId);
     }
 
     private void handleWithdrawCourse() {
         System.out.println("\n--- WITHDRAW FROM COURSE ---");
 
-        String studentId = Validator.getString("Enter Student ID to withdraw: ", "ID cannot be empty.", "^[sS]\\d{3}$");
-        String courseSectionId = Validator.getString("Enter Course Section ID to withdraw: ", "ID cannot be empty.");
+        String studentId = Validator.getString("Enter Student ID to withdraw: ", "", "^[sS]\\d{3}$");
+        List<Registration> list = registrationManager.getRegistrationsByStudent(studentId);
+        if (list.isEmpty()) {
+            System.out.println("Student " + studentId + " has not registered for any courses.");
+            return;
+        } else {
+            System.out.println("=== REGISTRATION LIST FOR STUDENT " + studentId.toUpperCase() + " ===");
+            list.forEach(System.out::println);
+        }
 
-        // Gọi hàm nghiệp vụ
+        String courseSectionId = Validator.getString("Enter Course Section ID to withdraw: ", "");
+
         registrationManager.withdrawCourse(studentId, courseSectionId);
     }
 
     private void handleInputGrade() {
         System.out.println("\n--- INPUT GRADE AND UPDATE STATUS ---");
 
-        String studentId = Validator.getString("Enter Student ID: ", "ID cannot be empty.", "^[sS]\\d{3}$");
-        String courseSectionId = Validator.getString("Enter Course Section ID: ", "ID cannot be empty.");
+        String studentId = Validator.getString("Enter Student ID: ", "", "^[sS]\\d{3}$");
 
-        String regId = studentId + "_" + courseSectionId;
+        List<Registration> list = registrationManager.getRegistrationsByStudent(studentId);
+        if (list.isEmpty()) {
+            System.out.println("Student " + studentId + " has not registered for any courses.");
+            return;
+        } else {
+            System.out.println("=== REGISTRATION LIST FOR STUDENT " + studentId.toUpperCase() + " ===");
+            list.forEach(System.out::println);
+        }
+
+        String courseSectionId = Validator.getString("Enter Course Section ID: ", "");
+
+        String regId = studentId.toUpperCase() + "_" + courseSectionId.toUpperCase();
         Registration reg = registrationManager.findById(regId);
 
         if (reg == null) {
@@ -657,7 +699,7 @@ public class CourseRegistrationSystem {
         if (list.isEmpty()) {
             System.out.println("Student " + studentId + " has not registered for any courses.");
         } else {
-            System.out.println("=== REGISTRATION LIST FOR STUDENT " + studentId + " ===");
+            System.out.println("=== REGISTRATION LIST FOR STUDENT " + studentId.toUpperCase() + " ===");
             list.forEach(System.out::println);
         }
     }
@@ -688,6 +730,9 @@ public class CourseRegistrationSystem {
                     handleCalculateSemesterGPA();
                     break; // Tính GPA theo học kỳ
                 case 3:
+                    handleSortBySubjectGPA();
+                    break;
+                case 4:
                     return; // Quay lại Menu chính
                 default:
                     System.out.println("Invalid choice.");
@@ -735,5 +780,52 @@ public class CourseRegistrationSystem {
         System.out.println("-------------------------------------------");
         System.out.printf("| GPA for Semester %d for %s is: %.2f\n", semester, student.getFullName(), semGpa);
         System.out.println("-------------------------------------------");
+    }
+
+    private void handleSortBySubjectGPA() {
+        System.out.println("\n--- SORT STUDENTS BY SUBJECT GPA ---");
+
+        // 1. Enter Subject ID
+        String subjectId = Validator.getString("Enter Subject ID to sort by: ", "Subject ID cannot be empty.");
+
+        // 2. Call business logic method from RegistrationManager (assuming it exists)
+        List<Student> results = registrationManager.getStudentsSortedBySubjectGPA(subjectId);
+
+        if (results == null || results.isEmpty()) {
+            System.out.printf("No students found or Subject %s does not exist.\n", subjectId);
+        } else {
+            System.out.printf("=== LIST OF STUDENTS SORTED BY GPA FOR SUBJECT %s ===\n", subjectId);
+            results.forEach(System.out::println);
+        }
+    }
+
+    private void handleViewSubjectsByStudent() {
+        System.out.println("\n--- VIEW SUBJECTS TAKEN BY A STUDENT ---");
+        String studentId = Validator.getString("Enter Student ID: ", "Student ID cannot be empty.");
+
+        Student student = studentManager.findById(studentId);
+        if (student == null) {
+            System.out.println("Error: Student not found with the entered ID.");
+            return;
+        }
+
+    }
+
+    private void handleViewStudentsBySubject() {
+        System.out.println("\n--- VIEW STUDENTS WHO TOOK A SUBJECT ---");
+
+        // 1. Enter Subject ID
+        String subjectId = Validator.getString("Enter Subject ID: ", "Subject ID cannot be empty.");
+
+        // 2. Call business logic method (assuming it exists in RegistrationManager)
+        List<Student> students = registrationManager.getStudentsBySubject(subjectId);
+
+        if (students == null || students.isEmpty()) {
+            System.out.printf("No students found for Subject ID: %s.\n", subjectId);
+        } else {
+            System.out.printf("=== LIST OF STUDENTS WHO TOOK SUBJECT %s ===\n", subjectId);
+            // Display full student information
+            students.forEach(System.out::println);
+        }
     }
 }

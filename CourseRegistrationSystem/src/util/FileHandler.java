@@ -35,10 +35,10 @@ public class FileHandler {
                 String[] parts = line.split("\\|");
                 if (parts.length == 5) {
                     students.add(new Student(
-                            parts[0],
-                            parts[1],
-                            parts[2],
-                            parts[3],
+                            parts[0].trim(),
+                            parts[1].trim(),
+                            parts[2].trim(),
+                            parts[3].trim(),
                             StudentStatus.valueOf(parts[4])
                     ));
                 }
@@ -60,8 +60,8 @@ public class FileHandler {
                 String[] parts = line.split("\\|");
                 if (parts.length >= 3) {
                     Subject subject = new Subject(
-                            parts[0],
-                            parts[1],
+                            parts[0].trim(),
+                            parts[1].trim(),
                             Integer.parseInt(parts[2])
                     );
                     if (parts.length == 4 && !parts[3].isEmpty()) {
@@ -91,8 +91,8 @@ public class FileHandler {
 
                 if (parts.length == 8) {
                     sections.add(new CourseSection(
-                            parts[0],
-                            parts[1],
+                            parts[0].trim(),
+                            parts[1].trim(),
                             Integer.parseInt(parts[2]),
                             Integer.parseInt(parts[3]),
                             Integer.parseInt(parts[4]),
@@ -120,8 +120,8 @@ public class FileHandler {
                 String[] parts = line.split("\\|");
                 if (parts.length == 4) {
                     registrations.add(new Registration(
-                            parts[0],
-                            parts[1],
+                            parts[0].trim(),
+                            parts[1].trim(),
                             Double.parseDouble(parts[2]),
                             RegistrationStatus.valueOf(parts[3])
                     ));

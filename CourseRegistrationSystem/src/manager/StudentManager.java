@@ -21,7 +21,7 @@ public class StudentManager extends Management<Student> implements Displayable {
 
         for (Student student : this.list) {
             if (student != null) {
-                if (getLastName(student.getFullName()).toLowerCase().contains(name.toLowerCase())) {
+                if (student.getFullName().toLowerCase().contains(name.toLowerCase())) {
                     resultList.add(student);
                 }
             }

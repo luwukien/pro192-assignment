@@ -73,6 +73,9 @@ public class Menu {
         options.add("Search course section by Subject ID");
         options.add("Update course section information");
         options.add("Delete course section");
+        options.add("Sort subject by GPA");
+        options.add("View Students By Subject"); 
+        options.add("View Subjects By Student");
         options.add("Display all course sections");
         options.add("Return to Main Menu");
 
@@ -97,6 +100,7 @@ public class Menu {
         List<String> options = new ArrayList<>();
         options.add("Calculate overall GPA for student");
         options.add("Calculate GPA by semester");
+        options.add("Sort students by subject GPA");
         options.add("Return to Main Menu");
         
         return getChoice("REPORTS AND STATISTICS", options);
