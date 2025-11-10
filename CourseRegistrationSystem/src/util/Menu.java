@@ -100,6 +100,7 @@ public class Menu {
         List<String> options = new ArrayList<>();
         options.add("Calculate overall GPA for student");
         options.add("Calculate GPA by semester");
+        options.add("Sort students by subject GPA");
         options.add("Return to Main Menu");
         
         return getChoice("REPORTS AND STATISTICS", options);
