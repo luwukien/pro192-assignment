@@ -30,7 +30,6 @@ public class RegistrationManager extends Management<Registration> implements Dis
     public boolean registerCourse(String studentId, String courseSectionId) {
         studentId = studentId.toUpperCase();
         courseSectionId = courseSectionId.toUpperCase();
-        //Thiếu logic xem studentID đó đang trong trạng thái gì/ Chỉ sv active mới được đăng kí.
         Student student = studentManager.findById(studentId);
         CourseSection course = courseManager.findById(courseSectionId);
 
@@ -43,7 +42,13 @@ public class RegistrationManager extends Management<Registration> implements Dis
             System.out.println("Not found this course section id: " + courseSectionId);
             return false;
         }
-
+        
+        //Check student status
+        if (student.getStatus() != enums.StudentStatus.ACTIVE) {
+            System.out.println("Error: Student " + studentId + " is " + student.getStatus() + ". Only ACTIVE students can register.");
+            return false;
+        }
+        
         //The numbers of course check
         if (course.isFull()) {
             System.out.println("This course is full. Please register another class!");
