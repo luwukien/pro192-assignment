@@ -129,7 +129,11 @@ public class CourseRegistrationSystem {
                         System.out.println("No students to display!");
                     } else {
                         for (Student student : sortedStudents) {
-                            System.out.println(student);
+                            double gpa = registrationManager.calculateOverallGPA(student.getStudentId());
+                            System.out.printf("| %-4s | %-25s | %-5.2f |\n",
+                                    student.getStudentId(),
+                                    student.getFullName(),
+                                    gpa);
                         }
                     }
                     break;
@@ -159,7 +163,7 @@ public class CourseRegistrationSystem {
                 "^[a-zA-Z0-9]+(\\.[a-zA-Z0-9]+)*@fpt\\.edu\\.vn$");
 
         // Tạo đối tượng Student (5 tham số)
-        Student newStudent = new Student(id.toUpperCase(), fullName.toUpperCase(), major.toUpperCase(), email.toUpperCase(), enums.StudentStatus.ACTIVE);
+        Student newStudent = new Student(id.toUpperCase(), fullName, major.toUpperCase(), email, enums.StudentStatus.ACTIVE);
 
         if (studentManager.add(newStudent)) {
             System.out.println("Student added successfully: " + newStudent);

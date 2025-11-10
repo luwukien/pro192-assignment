@@ -46,7 +46,7 @@ public class Menu {
         options.add("Search student by Name");
         options.add("Update student information");
         options.add("Delete student");
-        options.add("Display all students (Sorted by name)");
+        options.add("Display all students");
         options.add("Sort by total GPA");
         options.add("Return to Main Menu");
 
