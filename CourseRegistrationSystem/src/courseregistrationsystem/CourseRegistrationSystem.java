@@ -752,7 +752,7 @@ public class CourseRegistrationSystem {
                 default:
                     System.out.println("Invalid choice.");
             }
-        } while (choice != 3);
+        } while (choice != 4);
     }
 
     private void handleCalculateOverallGPA() {
@@ -803,14 +803,21 @@ public class CourseRegistrationSystem {
         // 1. Enter Subject ID
         String subjectId = Validator.getString("Enter Subject ID to sort by: ", "Subject ID cannot be empty.");
 
-        // 2. Call business logic method from RegistrationManager (assuming it exists)
+        // 2. Call business logic method from RegistrationManager
         List<Student> results = registrationManager.getStudentsSortedBySubjectGPA(subjectId);
 
         if (results == null || results.isEmpty()) {
-            System.out.printf("No students found or Subject %s does not exist.\n", subjectId);
+            System.out.printf("No students found or Subject %s does not exist.\n", subjectId.toUpperCase());
         } else {
-            System.out.printf("=== LIST OF STUDENTS SORTED BY GPA FOR SUBJECT %s ===\n", subjectId);
-            results.forEach(System.out::println);
+            System.out.printf("=== LIST OF STUDENTS SORTED BY GPA FOR SUBJECT %s ===\n", subjectId.toUpperCase());
+            for (Student student : results) {
+                double grade = registrationManager.findGradeForSubject(student.getStudentId(), subjectId);
+                System.out.printf("| %-10s | %-25s | %-5.2f |\n", 
+                                  student.getStudentId(), 
+                                  student.getFullName(), 
+                                  grade);
+            }
+            System.out.println("--------------------------------------------------");
         }
     }
 

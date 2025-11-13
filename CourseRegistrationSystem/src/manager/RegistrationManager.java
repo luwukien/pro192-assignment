@@ -42,13 +42,13 @@ public class RegistrationManager extends Management<Registration> implements Dis
             System.out.println("Not found this course section id: " + courseSectionId);
             return false;
         }
-        
+
         //Check student status
         if (student.getStatus() != enums.StudentStatus.ACTIVE) {
             System.out.println("Error: Student " + studentId + " is " + student.getStatus() + ". Only ACTIVE students can register.");
             return false;
         }
-        
+
         //The numbers of course check
         if (course.isFull()) {
             System.out.println("This course is full. Please register another class!");
@@ -283,18 +283,37 @@ public class RegistrationManager extends Management<Registration> implements Dis
 
     public List<Student> getStudentsSortedBySubjectGPA(String subjectId) {
         List<Student> allStudents = studentManager.getAll();
-        List<Student> sortedList = new ArrayList<>(allStudents);
+        List<Student> filteredList = new ArrayList<>();
+        String targetIdUpper = subjectId.toUpperCase();
 
-        Collections.sort(sortedList, (s1, s2) -> {
-            double gpa1 = findGradeForSubject(s1.getStudentId(), subjectId.toUpperCase());
-            double gpa2 = findGradeForSubject(s2.getStudentId(), subjectId.toUpperCase());
+        for (Student student : allStudents) {
+            boolean hasCompletedSubject = false;
+            List<Registration> regs = this.getRegistrationsByStudent(student.getStudentId());
+
+            for (Registration reg : regs) {
+                if (reg.getStatus() == RegistrationStatus.PASSED || reg.getStatus() == RegistrationStatus.FAILED) {
+                    CourseSection course = courseManager.findById(reg.getCourseSectionId());
+                    if (course != null && course.getSubjectId().equals(targetIdUpper)) {
+                        hasCompletedSubject = true;
+                        break;
+                    }
+                }
+            }
+            
+            if (hasCompletedSubject == true) {
+                filteredList.add(student);
+            }
+        }
+        Collections.sort(filteredList, (s1, s2) -> {
+            double gpa1 = findGradeForSubject(s1.getStudentId(), targetIdUpper);
+            double gpa2 = findGradeForSubject(s2.getStudentId(), targetIdUpper);
 
             return Double.compare(gpa2, gpa1);
         });
-        return sortedList;
+        return filteredList;
     }
 
-    private double findGradeForSubject(String studentId, String targetSubjectId) {
+    public double findGradeForSubject(String studentId, String targetSubjectId) {
         studentId = studentId.toUpperCase();
         targetSubjectId = targetSubjectId.toUpperCase();
         List<Registration> regs = this.getRegistrationsByStudent(studentId);
