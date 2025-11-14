@@ -10,6 +10,7 @@ import data.Student;
 import data.Registration;
 import data.CourseSection;
 import data.Subject;
+import enums.DayOfWeek;
 import enums.RegistrationStatus;
 
 public class RegistrationManager extends Management<Registration> implements Displayable {
@@ -54,12 +55,40 @@ public class RegistrationManager extends Management<Registration> implements Dis
             System.out.println("This course is full. Please register another class!");
             return false;
         }
+        
+        //Check duplicate schedule
+        List<Registration> studentRegistrations = this.getRegistrationsByStudent(studentId);
+        DayOfWeek newDay = course.getDayOfWeek();
+        int newStart = course.getStartSlot();
+        int newEnd = course.getEndSlot();
+        int targetSemester = course.getSemester();
+
+        for (Registration reg : studentRegistrations) {
+            if (reg.getStatus() == RegistrationStatus.ENROLLED) {
+                CourseSection oldCourse = courseManager.findById(reg.getCourseSectionId());
+                if (oldCourse == null) continue;
+
+                if (oldCourse.getSemester() == targetSemester) {
+                    DayOfWeek oldDay = oldCourse.getDayOfWeek();
+                    int oldStart = oldCourse.getStartSlot();
+                    int oldEnd = oldCourse.getEndSlot();
+
+                    if (newDay.equals(oldDay)) {
+ 
+                        if (newStart <= oldEnd && newEnd >= oldStart) {
+                            System.out.println("Error: Schedule conflict with " + oldCourse.getCourseSectionId() + 
+                                               " (Slot: " + oldDay + " " + oldStart + "-" + oldEnd + ")");
+                            return false;
+                        }
+                    }
+                }
+            }
+        }
 
         //Credit Limit Check
         String subjectId = course.getSubjectId();
         Subject subject = subjectManager.findById(subjectId);
         int newCredits = subject.getCredit();
-        int targetSemester = course.getSemester();
         int currentCredits = calculateCurrentCredits(studentId, targetSemester);
         if (currentCredits + newCredits > 20) {
             System.out.println("Error: Over 20 credits. A student can only register not exceeding 20 credits in a semester!");
@@ -73,7 +102,6 @@ public class RegistrationManager extends Management<Registration> implements Dis
         if (existingReg == null) {
             //Prerequisite Check
             List<String> prerequisiteSubjects = subject.getPrerequisiteSubjectIds();
-            List<Registration> studentRegistrations = this.getRegistrationsByStudent(studentId);
 
             String currentSubjectId = course.getSubjectId();
             for (Registration reg : studentRegistrations) {

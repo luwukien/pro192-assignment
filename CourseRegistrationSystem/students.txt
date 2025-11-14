@@ -12,4 +12,4 @@ S011|Cao Xuan Quyet|SE|quyetcx@fpt.edu.vn|ACTIVE
 S012|Dinh Thi Thao|AI|thaodt@fpt.edu.vn|INACTIVE
 S013|Mai Xuan Tung|IT|tungmx@fpt.edu.vn|INACTIVE
 S999|Luu Chi Kien|IT|luukien2910@fpt.edu.vn|ACTIVE
-S101|THICH THI NHICH|BA|NHICH@FPT.EDU.VN|ACTIVE
+S101|Thich Thi Nhich|BA|nhich@fpt.edu.vn|ACTIVE
